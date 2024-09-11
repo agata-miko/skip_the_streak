@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skip_the_streak/models/habit.dart';
 
 class HabitCard extends StatelessWidget {
-  const HabitCard({super.key});
+  // final Habit habit;
+  // const HabitCard({super.key, required this.habit}); //to be added later
 
   @override
   Widget build(BuildContext context) {

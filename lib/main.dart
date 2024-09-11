@@ -14,27 +14,26 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // final brightness = View.of(context).platformDispatcher.platformBrightness;
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
 
-    // TextTheme textTheme = createTextTheme(context, "Assistant", "Assistant");
-    //
-    // MaterialTheme theme = MaterialTheme(textTheme);
+    TextTheme textTheme = createTextTheme(context, "Assistant", "Assistant");
+
+    MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
       title: 'Flutter Demo',
-      // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      localizationsDelegates: [
+      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+    localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-      ],
+   ],
       supportedLocales: [
         Locale('en'), // English
         Locale('pl'), // Spanish
       ],
-      home: const HabitCard(),
+      home: LoginScreen(),
     );
   }
 }

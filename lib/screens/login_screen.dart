@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                       labelText: S.of(context).password_label,
                       suffixIcon: IconButton(
                           onPressed: () {},
-                          icon: const Icon(Icons.highlight_remove))),
+                          icon: const Icon(Icons.remove_red_eye_outlined))),
                 ),
               ),
               Divider(
