@@ -6,5 +6,7 @@
   "login_label": "Nazwa użytkownika",
   "password_label": "Hasło",
   "password_label_2": "Powtórz hasło",
-  "dayOfWeek": "Cześć {dayOfWeek}"
+  "dayOfWeek": "Cześć {dayOfWeek}",
+  "startDate": "Data początkowa",
+  "milestone": "Krok milowy"
 }

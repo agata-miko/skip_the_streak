@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skip_the_streak/models/habit.dart';
-import 'package:skip_the_streak/dummy_data.dart';
+import 'package:skip_the_streak/dummy_data/dummy_data.dart';
 
 class HabitCard extends StatelessWidget {
 

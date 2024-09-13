@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:skip_the_streak/screens/about_screen.dart';
+import 'package:skip_the_streak/screens/add_habit_screen.dart';
 import 'package:skip_the_streak/screens/login_screen.dart';
 import 'package:skip_the_streak/screens/main_habits_screen.dart';
 import 'package:skip_the_streak/screens/register_screen.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: MainHabitsScreen(),
+      home: AddHabitScreen(),
     );
   }
 }

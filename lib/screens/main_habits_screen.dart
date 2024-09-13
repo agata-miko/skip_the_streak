@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:skip_the_streak/dummy_data.dart';
+import 'package:skip_the_streak/dummy_data/dummy_data.dart';
 import '../widgets/habit_card.dart';
 
 class MainHabitsScreen extends StatefulWidget {
@@ -29,11 +29,11 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.menu, size: fontSizeTitle),
+            icon: const Icon(Icons.menu),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.add, size: fontSizeTitle),
+              icon: const Icon(Icons.add),
               onPressed: () {},
             ),
           ],
