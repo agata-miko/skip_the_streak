@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:skip_the_streak/screens/about_screen.dart';
 import 'package:skip_the_streak/screens/login_screen.dart';
+import 'package:skip_the_streak/screens/main_habits_screen.dart';
+import 'package:skip_the_streak/screens/register_screen.dart';
 import 'package:skip_the_streak/widgets/habit_card.dart';
-import 'generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
 
@@ -24,18 +26,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-    localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-   ],
-      supportedLocales: [
-        Locale('en'), // English
-        Locale('pl'), // Spanish
-      ],
-      home: LoginScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: MainHabitsScreen(),
     );
   }
 }
-
-

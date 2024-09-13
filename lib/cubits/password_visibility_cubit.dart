@@ -1,8 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PasswordObscureText extends Cubit<bool> {
+class PasswordObscureText extends Cubit<Map<String, bool>> {
+  PasswordObscureText()
+      : super({
+          'password': true,
+          'confirm_password': true,
+        });
 
-  PasswordObscureText() : super(true);
-
-  void toggleVisibility() => emit(!state);
+  void toggleVisibility(String field) {
+    emit({...state, field: !state[field]!});
+  }
 }

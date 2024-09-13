@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skip_the_streak/cubits/login_cubit.dart';
 import 'package:skip_the_streak/cubits/password_visibility_cubit.dart';
-import 'package:skip_the_streak/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                         onChanged: (text) => context.read<LoginCubit>().updateLoginText(text),
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          labelText: S.of(context).login_label,
+                          labelText: AppLocalizations.of(context)!.login_label,
                           suffixIcon: IconButton(
                             onPressed: () => context.read<LoginCubit>().clearLoginText(),
                             icon: const Icon(Icons.highlight_remove),
@@ -57,19 +57,19 @@ class LoginScreen extends StatelessWidget {
                 ),
                 BlocProvider(
                   create: (context) => PasswordObscureText(),
-                  child: BlocBuilder<PasswordObscureText, bool>(
+                  child: BlocBuilder<PasswordObscureText, Map<String, bool>>(
                     builder: (context, state) {
                       return SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: TextField(
-                          obscureText: state,
+                          obscureText: state['password']!,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              labelText: S.of(context).password_label,
+                              labelText: AppLocalizations.of(context)!.password_label_2,
                               suffixIcon: IconButton(
                                   onPressed: () => context
                                       .read<PasswordObscureText>()
-                                      .toggleVisibility(),
+                                      .toggleVisibility('password'),
                                   icon: const Icon(
                                       Icons.remove_red_eye_outlined))),
                         ),
@@ -82,9 +82,9 @@ class LoginScreen extends StatelessWidget {
                   thickness: 0,
                 ),
                 ElevatedButton(
-                    onPressed: () {}, child: Text(S.of(context).login)),
+                    onPressed: () {}, child: Text(AppLocalizations.of(context)!.login)),
                 TextButton(
-                    onPressed: () {}, child: Text(S.of(context).register)),
+                    onPressed: () {}, child: Text(AppLocalizations.of(context)!.register_question)),
               ],
             ),
           ),

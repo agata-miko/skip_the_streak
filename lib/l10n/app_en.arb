@@ -1,0 +1,10 @@
+{
+  "login": "Get started",
+  "register": "Register",
+  "register_question": "Not a member? Register now",
+  "login_question": "Already a member? Log in",
+  "login_label": "Login",
+  "password_label": "Password",
+  "password_label_2": "Confirm Password",
+  "dayOfWeek": "Hello {dayOfWeek}"
+}

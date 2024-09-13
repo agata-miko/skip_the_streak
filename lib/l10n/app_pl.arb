@@ -1,0 +1,10 @@
+{
+  "login": "Zaloguj",
+  "register": "Założ konto",
+  "register_question": "Nie masz konta? Zarejestruj się",
+  "login_question": "Masz już konto? Zaloguj",
+  "login_label": "Nazwa użytkownika",
+  "password_label": "Hasło",
+  "password_label_2": "Powtórz hasło",
+  "dayOfWeek": "Cześć {dayOfWeek}"
+}
