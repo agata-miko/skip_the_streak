@@ -5,7 +5,7 @@ import 'package:skip_the_streak/dummy_data/dummy_data.dart';
 import '../widgets/habit_card.dart';
 
 class MainHabitsScreen extends StatefulWidget {
- MainHabitsScreen({super.key});
+  MainHabitsScreen({super.key});
 
   @override
   State<MainHabitsScreen> createState() => _MainHabitsScreenState();
@@ -22,7 +22,6 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final double cardPadding = screenWidth * 0.01;
-    final double fontSizeTitle = screenWidth * 0.04;
 
     return SafeArea(
       child: Scaffold(
@@ -43,15 +42,24 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Hello $dayOfWeek',
-                style: TextStyle(
-                    fontSize: 28,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    fontWeight: FontWeight.w900),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.04,
+                    vertical: screenSize.height * 0.02),
+                child: Text(
+                  'Hello $dayOfWeek',
+                  style: TextStyle(
+                    fontSize: 24, // Match the updated 'New habit' size
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold, // Same weight as 'New habit'
+                    letterSpacing: 0.8, // Same letter spacing for consistency
+                    height: 1.4, // Line height for better vertical spacing
+                  ),
+                ),
               ),
               SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02),
+                height: screenSize.height * 0.02,
+              ),
               Expanded(
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

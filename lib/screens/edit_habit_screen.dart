@@ -3,14 +3,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/carousel.dart';
 import '../widgets/milestone_carousel.dart';
 
-class AddHabitScreen extends StatefulWidget {
-  const AddHabitScreen({super.key});
+class EditHabitScreen extends StatefulWidget {
+  const EditHabitScreen({super.key});
 
   @override
-  State<AddHabitScreen> createState() => _AddHabitScreenState();
+  State<EditHabitScreen> createState() => _EditHabitScreenState();
 }
 
-class _AddHabitScreenState extends State<AddHabitScreen> {
+class _EditHabitScreenState extends State<EditHabitScreen> {
   bool _isSwitched = false;
   bool _isSwitched_2 = false;
   DateTime? _selectedDate;
@@ -76,7 +76,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     horizontal: MediaQuery.of(context).size.width * 0.04,
                     vertical: MediaQuery.of(context).size.height * 0.02),
                 child: Text(
-                  'New habit',
+                  'Edit habit',
                   style: TextStyle(
                     fontSize: 24, // Slightly smaller for better balance
                     color: Theme.of(context).colorScheme.primary,
