@@ -10,6 +10,7 @@ class ReminderScreen extends StatefulWidget {
 
 class _ReminderScreenState extends State<ReminderScreen> {
   bool _isSwitched = false;
+  bool _drawerIsSwitched = false;
   TimeOfDay? _selectedTime;
 
   // Function to pick a time for the reminder
@@ -35,16 +36,80 @@ class _ReminderScreenState extends State<ReminderScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu),
-          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {},
             ),
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: const DrawerHeader(
+                  decoration: BoxDecoration(),
+                  child: Text(
+                    'Settings',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text('Dark Mode'),
+                trailing: Switch(
+                  value: _drawerIsSwitched,
+                  onChanged: (value) {
+                    setState(() {
+                      _drawerIsSwitched = value;
+                    });
+                  },
+                ),
+                onTap: () {
+                  // Handle light/dark mode toggle
+                  Navigator.pop(context); // Close the drawer
+                },
+              ),
+              ListTile(
+                title: const Text('Language'),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.pop(context); // Close the drawer
+                },
+              ),
+              ListTile(
+                title: const Text('Reminders'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReminderScreen()));
+                   // Close the drawer
+                },
+              ),
+              ListTile(
+                title: const Text('Profile'),
+                onTap: () {
+                  // Navigate to Profile Screen
+                  Navigator.pop(context); // Close the drawer
+                  // Navigate to Profile screen here
+                },
+              ),
+              ListTile(
+                title: const Text('Privacy Policy'),
+                onTap: () {
+                  // Show Privacy Policy (implement it accordingly)
+                  Navigator.pop(context); // Close the drawer
+                },
+              ),
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -91,7 +156,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Reminder',  // Changed from 'Start Date' to 'Reminder'
+                          'Reminder', // Changed from 'Start Date' to 'Reminder'
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(width: 5),

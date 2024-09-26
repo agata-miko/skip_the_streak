@@ -7,6 +7,7 @@ import 'package:skip_the_streak/screens/login_screen.dart';
 import 'package:skip_the_streak/screens/main_habits_screen.dart';
 import 'package:skip_the_streak/screens/register_screen.dart';
 import 'package:skip_the_streak/screens/reminder_screen.dart';
+import 'package:skip_the_streak/screens/settings_screen.dart';
 import 'package:skip_the_streak/widgets/habit_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/util.dart';
