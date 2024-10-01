@@ -47,7 +47,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
             ),
           ],
         ),
-        drawer: AppDrawer(context: context),
+        drawer: AppDrawer(),
         body: Padding(
           padding: EdgeInsets.all(cardPadding),
           child: Column(

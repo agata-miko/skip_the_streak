@@ -56,7 +56,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
             ),
           ],
         ),
-        drawer: AppDrawer(context: context),
+        drawer: AppDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),

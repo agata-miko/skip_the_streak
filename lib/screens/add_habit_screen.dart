@@ -77,7 +77,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             ),
           ],
         ),
-        drawer: AppDrawer(context: context),
+        drawer: AppDrawer(),
         body: SingleChildScrollView(
           controller: _scrollController, // Attach the scroll controller
           child: Column(

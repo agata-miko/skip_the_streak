@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/dark_theme_cubit.dart';
 import '../screens/reminder_screen.dart';
 
 class AppDrawer extends StatelessWidget {
-  final BuildContext context;
+
 
   const AppDrawer({
     super.key,
-    required this.context,
   });
 
   @override
@@ -32,7 +33,10 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Dark Mode'),
             trailing: Switch(
-              value: false, onChanged: (bool value) {},
+              value: context.read<ThemeCubit>().state.isDarkMode,
+              onChanged: (bool value) {
+                context.read<ThemeCubit>().toggleTheme(value);
+              },
             ),
             onTap: () {
               // Handle light/dark mode toggle
@@ -50,10 +54,8 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Reminders'),
             onTap: () async {
               Navigator.pop(context);
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ReminderScreen()));
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReminderScreen()));
               // Close the drawer
             },
           ),

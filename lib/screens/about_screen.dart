@@ -16,7 +16,7 @@ class AboutScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(context: context),
+      drawer: AppDrawer(),
       body: Column(children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,

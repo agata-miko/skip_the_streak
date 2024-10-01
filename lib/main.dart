@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:skip_the_streak/screens/about_screen.dart';
 import 'package:skip_the_streak/screens/add_habit_screen.dart';
@@ -10,6 +11,7 @@ import 'package:skip_the_streak/screens/reminder_screen.dart';
 import 'package:skip_the_streak/screens/welcome_screen.dart';
 import 'package:skip_the_streak/widgets/habit_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'cubits/dark_theme_cubit.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
 
@@ -22,17 +24,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
-
     TextTheme textTheme = createTextTheme(context, "Assistant", "Assistant");
-
     MaterialTheme theme = MaterialTheme(textTheme);
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: WelcomeScreen(),
+
+    return BlocProvider(
+      create: (context) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+        return MaterialApp(
+          theme: themeState.isDarkMode ? theme.dark() : theme.light(),
+          title: 'Flutter Demo',
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: WelcomeScreen(),
+        );},
+      ),
     );
   }
 }
