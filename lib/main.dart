@@ -12,6 +12,7 @@ import 'package:skip_the_streak/screens/welcome_screen.dart';
 import 'package:skip_the_streak/widgets/habit_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'cubits/dark_theme_cubit.dart';
+import 'cubits/language_cubit.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
 
@@ -27,16 +28,23 @@ class MyApp extends StatelessWidget {
     TextTheme textTheme = createTextTheme(context, "Assistant", "Assistant");
     MaterialTheme theme = MaterialTheme(textTheme);
 
-    return BlocProvider(
-      create: (context) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeCubit()),
+        BlocProvider(create: (context) => LanguageCubit()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
-        return MaterialApp(
-          theme: themeState.isDarkMode ? theme.dark() : theme.light(),
-          title: 'Flutter Demo',
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: WelcomeScreen(),
+        return BlocBuilder<LanguageCubit, Locale>(
+          builder: (context, locale) {
+          return MaterialApp(
+            theme: themeState.isDarkMode ? theme.dark() : theme.light(),
+            title: 'Flutter Demo',
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: locale,
+            home: WelcomeScreen(),
+          );},
         );},
       ),
     );

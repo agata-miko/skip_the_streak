@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/dark_theme_cubit.dart';
+import '../cubits/language_cubit.dart';
 import '../screens/reminder_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -45,10 +46,26 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Language'),
-            onTap: () {
-              // Handle language selection
-              Navigator.pop(context); // Close the drawer
-            },
+            trailing: DropdownButton<Locale>(
+              value: context.read<LanguageCubit>().state,
+              icon: const Icon(Icons.arrow_drop_down),
+              onChanged: (Locale? newValue) {
+                if (newValue != null) {
+                  context.read<LanguageCubit>().changeLanguage(newValue);
+                }
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: Locale('en'), // English
+                  child: Text('English'),
+                ),
+                DropdownMenuItem(
+                  value: Locale('pl'), // Spanish
+                  child: Text('Polski'),
+                ),
+                // Add more languages here
+              ],
+            ),
           ),
           ListTile(
             title: const Text('Reminders'),
