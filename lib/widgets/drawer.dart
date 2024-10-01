@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../screens/reminder_screen.dart';
 
 class AppDrawer extends StatelessWidget {
+  final BuildContext context;
+
   const AppDrawer({
     super.key,
+    required this.context,
   });
 
   @override
@@ -54,21 +57,21 @@ class AppDrawer extends StatelessWidget {
               // Close the drawer
             },
           ),
-          ListTile(
-            title: const Text('Profile'),
-            onTap: () {
-              // Navigate to Profile Screen
-              Navigator.pop(context); // Close the drawer
-              // Navigate to Profile screen here
-            },
-          ),
-          ListTile(
-            title: const Text('Privacy Policy'),
-            onTap: () {
-              // Show Privacy Policy (implement it accordingly)
-              Navigator.pop(context); // Close the drawer
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Profile'),
+          //   onTap: () {
+          //     // Navigate to Profile Screen
+          //     Navigator.pop(context); // Close the drawer
+          //     // Navigate to Profile screen here
+          //   },
+          // ),
+          // ListTile(
+          //   title: const Text('Privacy Policy'),
+          //   onTap: () {
+          //     // Show Privacy Policy (implement it accordingly)
+          //     Navigator.pop(context); // Close the drawer
+          //   },
+          // ),
         ],
       ),
     );

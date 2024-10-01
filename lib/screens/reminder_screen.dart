@@ -37,14 +37,26 @@ class _ReminderScreenState extends State<ReminderScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {},
+            Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.settings), // Settings icon
+                  onPressed: () {
+                    // Open the drawer when settings icon is tapped
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: AppDrawer(context: context),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -153,4 +165,3 @@ class _ReminderScreenState extends State<ReminderScreen> {
     );
   }
 }
-

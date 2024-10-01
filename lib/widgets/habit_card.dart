@@ -36,11 +36,13 @@ class HabitCard extends StatelessWidget {
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
-            child: Image.network(
-              card.imagePath,
-              height: MediaQuery.of(context).size.height * 0.17,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            child: Center(
+              child: Image.asset(
+                card.imagePath,
+                height: MediaQuery.of(context).size.height * 0.12,
+                width: MediaQuery.of(context).size.height * 0.12,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Padding(
