@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/carousel.dart';
+import '../widgets/drawer.dart';
 import '../widgets/milestone_carousel.dart';
 
 class EditHabitScreen extends StatefulWidget {
@@ -15,9 +16,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   bool _isSwitched_2 = false;
   DateTime? _selectedDate;
   final List<String> imgList = [
-    'https://via.placeholder.com/600x400',
-    'https://via.placeholder.com/600x400?text=Second',
-    'https://via.placeholder.com/600x400?text=Third',
+    'lib/assets/images/dummy_books.png',
+    'lib/assets/images/dummy_dog.png',
+    'lib/assets/images/dummy_joga.png',
+    'lib/assets/images/dummy_water.png',
+    'lib/assets/images/dummy_joga.png',
   ];
 
   final ScrollController _scrollController = ScrollController();
@@ -55,37 +58,50 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          // title: Text('New habit'),
           leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu),
-          ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {},
+            Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.settings), // Settings icon
+                  onPressed: () {
+                    // Open the drawer when settings icon is tapped
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
             ),
           ],
         ),
+        drawer: AppDrawer(),
         body: SingleChildScrollView(
           controller: _scrollController, // Attach the scroll controller
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.04,
-                    vertical: MediaQuery.of(context).size.height * 0.02),
-                child: Text(
-                  'Edit habit',
-                  style: TextStyle(
-                    fontSize: 24, // Slightly smaller for better balance
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold, // Reduce to 'bold' for cleaner look
-                    letterSpacing: 0.8, // Subtle letter spacing for refinement
-                    height: 1.4, // Adjust line height for better spacing
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width * 0.04,
+              //       vertical: MediaQuery.of(context).size.height * 0.02),
+              //   child: Text(
+              //     'New habit',
+              //     style: TextStyle(
+              //       fontSize: 24,
+              //       // Slightly smaller for better balance
+              //       color: Theme.of(context).colorScheme.primary,
+              //       fontWeight: FontWeight.bold,
+              //       // Reduce to 'bold' for cleaner look
+              //       letterSpacing: 0.8,
+              //       // Subtle letter spacing for refinement
+              //       height: 1.4, // Adjust line height for better spacing
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               CarouselWidget(imgList: imgList),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -191,7 +207,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10), // Space between the date picker and milestone
+                      SizedBox(height: 10),
+                      // Space between the date picker and milestone
                     ],
                   ),
                 ),
@@ -235,6 +252,13 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                 ),
               ),
               if (_isSwitched_2) MilestoneCarousel(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Save changes'),
+                ),
+              ),
             ],
           ),
         ),

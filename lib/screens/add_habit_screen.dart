@@ -58,6 +58,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          // title: Text('New habit'),
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -83,24 +84,24 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.04,
-                    vertical: MediaQuery.of(context).size.height * 0.02),
-                child: Text(
-                  'New habit',
-                  style: TextStyle(
-                    fontSize: 24,
-                    // Slightly smaller for better balance
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                    // Reduce to 'bold' for cleaner look
-                    letterSpacing: 0.8,
-                    // Subtle letter spacing for refinement
-                    height: 1.4, // Adjust line height for better spacing
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width * 0.04,
+              //       vertical: MediaQuery.of(context).size.height * 0.02),
+              //   child: Text(
+              //     'New habit',
+              //     style: TextStyle(
+              //       fontSize: 24,
+              //       // Slightly smaller for better balance
+              //       color: Theme.of(context).colorScheme.primary,
+              //       fontWeight: FontWeight.bold,
+              //       // Reduce to 'bold' for cleaner look
+              //       letterSpacing: 0.8,
+              //       // Subtle letter spacing for refinement
+              //       height: 1.4, // Adjust line height for better spacing
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               CarouselWidget(imgList: imgList),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -251,6 +252,13 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 ),
               ),
               if (_isSwitched_2) MilestoneCarousel(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Add habit'),
+                ),
+              ),
             ],
           ),
         ),

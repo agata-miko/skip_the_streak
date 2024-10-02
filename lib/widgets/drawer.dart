@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/dark_theme_cubit.dart';
 import '../cubits/language_cubit.dart';
+import '../screens/about_screen.dart';
+import '../screens/add_habit_screen.dart';
 import '../screens/reminder_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -30,6 +32,15 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          ListTile(
+            title: const Text('Add habit'),
+            onTap: () async {
+              Navigator.pop(context);
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddHabitScreen()));
+              // Close the drawer
+            },
           ),
           ListTile(
             title: const Text('Dark Mode'),
@@ -73,6 +84,15 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
               await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ReminderScreen()));
+              // Close the drawer
+            },
+          ),
+          ListTile(
+            title: const Text('About'),
+            onTap: () async {
+              Navigator.pop(context);
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutScreen()));
               // Close the drawer
             },
           ),

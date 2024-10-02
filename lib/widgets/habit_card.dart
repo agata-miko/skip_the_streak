@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:skip_the_streak/models/habit.dart';
 import 'package:skip_the_streak/dummy_data/dummy_data.dart';
+import 'package:skip_the_streak/screens/edit_habit_screen.dart';
 
 class HabitCard extends StatelessWidget {
-
   const HabitCard({
     super.key,
     required this.card,
@@ -11,6 +11,19 @@ class HabitCard extends StatelessWidget {
 
   final Habit card;
 
+  void _showDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Are you sure?'),
+              content: Text(
+                  'Are you sure you want to remove this habit? This cannot be undone.'),
+              actions: [
+                TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text('Cancel')),
+                TextButton(onPressed: () {}, child: Text('Remove habit'))
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +52,8 @@ class HabitCard extends StatelessWidget {
             child: Center(
               child: Image.asset(
                 card.imagePath,
-                height: MediaQuery.of(context).size.height * 0.12,
-                width: MediaQuery.of(context).size.height * 0.12,
+                height: MediaQuery.of(context).size.height * 0.11,
+                width: MediaQuery.of(context).size.height * 0.11,
                 fit: BoxFit.cover,
               ),
             ),
@@ -59,25 +72,55 @@ class HabitCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: card.description != null ? Text(
-              card.description!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: fontSizeBody,
-              ),
-              maxLines: 1,
-            ) : null,
+            child: card.description != null
+                ? Text(
+                    card.description!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: fontSizeBody,
+                    ),
+                    maxLines: 1,
+                  )
+                : null,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              '${card.number}',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: fontSizeNumber,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${card.number}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: fontSizeNumber,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                PopupMenuButton<String>(
+                  icon: Icon(Icons.more_vert),
+                  onSelected: (value) {},
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Text('Edit'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditHabitScreen()));
+                        },
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'remove',
+                        child: Text('Remove'),
+                        onTap: () {_showDialog(context);},
+                      ),
+                    ];
+                  },
+                ),
+              ],
             ),
           ),
         ],
