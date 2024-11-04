@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../models/habit.dart';
+import '../models/habit.dart';
 import '../widgets/carousel.dart';
 import '../widgets/drawer.dart';
 import '../widgets/milestone_carousel.dart';
+import '../cubits/hive_cubit.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -24,6 +28,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   ];
 
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   Future<void> _selectDate() async {
     DateTime now = DateTime.now();
@@ -51,6 +57,19 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
         curve: Curves.easeInOut,
       );
     });
+  }
+
+  void _addHabit() {
+    final newHabit = Habit(
+      imagePath: 'lib/assets/images/dummy_books.png',
+      title: _titleController.text,
+      description: _descriptionController.text,
+      startDate: _selectedDate,
+      // Add other properties as needed
+    );
+
+    context.read<HiveCubit>().addHabit(newHabit); // Call the addHabit method from HiveCubit
+    Navigator.pop(context); // Go back to the previous screen
   }
 
   @override
@@ -110,13 +129,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  onChanged: (value) {(_titleController.text = value);},
                   maxLength: 50,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Title'),
                     helperText: 'The name of your habit, e.g. \'reading\'',
                     suffixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _titleController.clear();
+                        },
                         icon: Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
@@ -127,13 +149,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  onChanged: (value) {(_descriptionController.text = value);},
                   maxLength: 150,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Description'),
                     helperText: 'Additional info, e.g. \'10 pages\' (optional)',
                     suffixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () {_descriptionController.clear();},
                         icon: Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
@@ -255,7 +278,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _addHabit,
                   child: Text('Add habit'),
                 ),
               ),
