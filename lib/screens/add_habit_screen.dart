@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../models/habit.dart';
 import '../widgets/carousel.dart';
-import '../widgets/drawer.dart';
+import 'settings_screen.dart';
 import '../widgets/milestone_carousel.dart';
 import '../cubits/hive_cubit.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/carousel.dart';
-import '../widgets/drawer.dart';
+import 'settings_screen.dart';
 import '../widgets/milestone_carousel.dart';
 
 class EditHabitScreen extends StatefulWidget {
@@ -78,7 +78,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: SettingsScreen(),
         body: SingleChildScrollView(
           controller: _scrollController, // Attach the scroll controller
           child: Column(

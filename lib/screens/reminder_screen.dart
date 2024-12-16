@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../widgets/drawer.dart';
+import 'settings_screen.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({super.key});
@@ -56,7 +56,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: SettingsScreen(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),

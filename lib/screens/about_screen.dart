@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../widgets/drawer.dart';
+import 'settings_screen.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -28,7 +28,7 @@ class AboutScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: SettingsScreen(),
       body: Column(children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,

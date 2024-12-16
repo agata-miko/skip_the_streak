@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart'; // **<--- New import for Bloc**
 import '../cubits/hive_cubit.dart'; // **<--- New import for HiveCubit**
 import 'package:skip_the_streak/screens/add_habit_screen.dart';
 import '../cubits/hive_state.dart';
-import '../widgets/drawer.dart';
+import 'settings_screen.dart';
 import '../widgets/habit_card.dart';
 
 class MainHabitsScreen extends StatefulWidget {
@@ -38,33 +38,47 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
+          automaticallyImplyLeading: false,
+          title: Builder(
+            builder: (BuildContext context) {
+              final locale = Localizations.localeOf(context).toString(); // Get current locale
+              final now = DateTime.now(); // Current date
+              final dayOfWeek = DateFormat('EEEE', locale).format(now); // Localized day
+              final date = DateFormat('dd MMMM', locale).format(now); // Localized date
+              final titleText = '$dayOfWeek $date'; // Combine day and date
+
+              return Text(titleText); // Display the localized title
+            },
+          ),
           actions: [
             Builder(
               builder: (BuildContext context) {
                 return IconButton(
                   icon: const Icon(Icons.settings), // Settings icon
                   onPressed: () {
-                    // Open the drawer when settings icon is tapped
-                    Scaffold.of(context).openDrawer();
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true, // Allows for full-height modals
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20)), // Rounded corners for the modal
+                      ),
+                      builder: (BuildContext context) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: FractionallySizedBox(
+                            heightFactor: 0.9, // Use 90% of the screen height
+                            child: SettingsScreen(),
+                          ),
+                        );
+                      },
+                    );
                   },
                 );
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddHabitScreen()));
-              },
-            ),
           ],
         ),
-        drawer: AppDrawer(),
         body: Padding(
           padding: EdgeInsets.all(cardPadding),
           child: Column(

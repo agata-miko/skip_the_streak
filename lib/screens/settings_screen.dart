@@ -1,31 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/dark_theme_cubit.dart';
 import '../cubits/language_cubit.dart';
-import '../screens/about_screen.dart';
-import '../screens/add_habit_screen.dart';
-import '../screens/reminder_screen.dart';
+import 'about_screen.dart';
+import 'add_habit_screen.dart';
+import 'reminder_screen.dart';
 
-class AppDrawer extends StatelessWidget {
-
-
-  const AppDrawer({
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.close), // Settings icon
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      body: ListView(
         padding: EdgeInsets.zero,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: const DrawerHeader(
-              decoration: BoxDecoration(),
-              child: Text(
-                'Settings',
+            height: MediaQuery.of(context).size.height * 0.05,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(AppLocalizations.of(context)!.settings,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -33,15 +45,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            title: const Text('Add habit'),
-            onTap: () async {
-              Navigator.pop(context);
-              await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddHabitScreen()));
-              // Close the drawer
-            },
-          ),
+
           ListTile(
             title: const Text('Dark Mode'),
             trailing: Switch(
@@ -83,7 +87,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ReminderScreen()));
+                  MaterialPageRoute(builder: (context) => const ReminderScreen()));
               // Close the drawer
             },
           ),
@@ -92,7 +96,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AboutScreen()));
+                  MaterialPageRoute(builder: (context) => const AboutScreen()));
               // Close the drawer
             },
           ),
