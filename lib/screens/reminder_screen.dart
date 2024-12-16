@@ -37,11 +37,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
           actions: [
             Builder(
               builder: (BuildContext context) {

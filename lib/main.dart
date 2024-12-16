@@ -17,6 +17,7 @@ import 'adapters/habit_adapter.dart';
 import 'cubits/dark_theme_cubit.dart';
 import 'cubits/hive_cubit.dart';
 import 'cubits/language_cubit.dart';
+import 'cubits/reminder_cubit.dart';
 import 'models/habit.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
@@ -31,7 +32,9 @@ void main() async {
 
   runApp(
     MultiBlocProvider(
-      providers: [
+      providers: [BlocProvider<ReminderCubit>(
+        create: (context) => ReminderCubit(),
+      ),
         BlocProvider(
           create: (context) => HiveCubit(habitBox), // Pass the opened box to HiveCubit
         ),
