@@ -17,12 +17,13 @@ class MainHabitsScreen extends StatefulWidget {
 }
 
 class _MainHabitsScreenState extends State<MainHabitsScreen> {
-
   @override
   void initState() {
     super.initState();
     // Load habits when the screen is initialized
-    context.read<HiveCubit>().loadHabits();// Assuming you have a loadHabits method in your HiveCubit
+    context
+        .read<HiveCubit>()
+        .loadHabits(); // Assuming you have a loadHabits method in your HiveCubit
   }
 
   @override
@@ -37,7 +38,11 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: () {Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
           actions: [
             Builder(
               builder: (BuildContext context) {
@@ -52,7 +57,10 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.add),
-              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AddHabitScreen()));},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddHabitScreen()));
+              },
             ),
           ],
         ),
@@ -63,34 +71,72 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: BlocBuilder<HiveCubit, HiveState>( // **<--- Using BlocBuilder to listen for state changes**
+                child: BlocBuilder<HiveCubit, HiveState>(
+                  // **<--- Using BlocBuilder to listen for state changes**
                   builder: (context, state) {
                     if (state is HiveLoading) {
-                      return Center(child: CircularProgressIndicator()); // **<--- Show loading indicator while loading**
+                      return Center(
+                          child:
+                              CircularProgressIndicator()); // **<--- Show loading indicator while loading**
                     } else if (state is HiveLoaded) {
-                      final habits = state.habits;// **<--- Get habits from state**
+                      final habits =
+                          state.habits; // **<--- Get habits from state**
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // Two columns
-                          crossAxisSpacing: cardPadding, // Space between columns
-                          mainAxisSpacing: cardPadding, // Space between rows
+                          crossAxisCount: 2,
+                          // Two columns
+                          crossAxisSpacing: cardPadding,
+                          // Space between columns
+                          mainAxisSpacing: cardPadding,
+                          // Space between rows
                           childAspectRatio: 1,
                         ),
-                        itemCount: habits.length, // **<--- Use the number of habits**
+                        itemCount: habits.length,
+                        // **<--- Use the number of habits**
                         itemBuilder: (context, index) {
-                          final habit = habits[index]; // **<--- Get each habit**
-                          return HabitCard(card: habit); // **<--- Pass the habit to the HabitCard**
+                          final habit =
+                              habits[index]; // **<--- Get each habit**
+                          return HabitCard(
+                              card:
+                                  habit); // **<--- Pass the habit to the HabitCard**
                         },
                       );
                     } else if (state is HiveError) {
-                      return Center(child: Text('Failed to load habits')); // **<--- Show error message**
+                      return Center(
+                          child: Text(
+                              'Failed to load habits')); // **<--- Show error message**
                     }
-                    return Center(child: Text('No habits found')); // **<--- Default message if no habits**
+                    return Center(
+                        child: Text(
+                            'No habits found')); // **<--- Default message if no habits**
                   },
                 ),
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true, // Allows for full-height modals
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20)), // Rounded corners for the modal
+              ),
+              builder: (BuildContext context) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FractionallySizedBox(
+                    heightFactor: 0.9, // Use 90% of the screen height
+                    child: AddHabitScreen(),
+                  ),
+                );
+              },
+            );
+          },
+          child: const Icon(Icons.add),
         ),
       ),
     );

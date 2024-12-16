@@ -68,7 +68,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       // Add other properties as needed
     );
 
-    context.read<HiveCubit>().addHabit(newHabit); // Call the addHabit method from HiveCubit
+    context
+        .read<HiveCubit>()
+        .addHabit(newHabit); // Call the addHabit method from HiveCubit
     Navigator.pop(context); // Go back to the previous screen
   }
 
@@ -77,27 +79,20 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // title: Text('New habit'),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
+          automaticallyImplyLeading: false,
           actions: [
             Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: const Icon(Icons.settings), // Settings icon
+                  icon: const Icon(Icons.close), // Settings icon
                   onPressed: () {
-                    // Open the drawer when settings icon is tapped
-                    Scaffold.of(context).openDrawer();
+                    Navigator.pop(context);
                   },
                 );
               },
             ),
           ],
         ),
-        drawer: AppDrawer(),
         body: SingleChildScrollView(
           controller: _scrollController, // Attach the scroll controller
           child: Column(
@@ -129,7 +124,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
-                  onChanged: (value) {(_titleController.text = value);},
+                  onChanged: (value) {
+                    (_titleController.text = value);
+                  },
                   maxLength: 50,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -149,14 +146,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
-                  onChanged: (value) {(_descriptionController.text = value);},
+                  onChanged: (value) {
+                    (_descriptionController.text = value);
+                  },
                   maxLength: 150,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Description'),
                     helperText: 'Additional info, e.g. \'10 pages\' (optional)',
                     suffixIcon: IconButton(
-                        onPressed: () {_descriptionController.clear();},
+                        onPressed: () {
+                          _descriptionController.clear();
+                        },
                         icon: Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
@@ -275,7 +276,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 ),
               ),
               if (_isSwitched_2) MilestoneCarousel(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
               Center(
                 child: ElevatedButton(
                   onPressed: _addHabit,
