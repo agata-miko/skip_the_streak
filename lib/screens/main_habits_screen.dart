@@ -20,10 +20,10 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
   @override
   void initState() {
     super.initState();
-    // Load habits when the screen is initialized
     context
         .read<HiveCubit>()
-        .loadHabits(); // Assuming you have a loadHabits method in your HiveCubit
+        .loadHabits();
+    context.read<HiveCubit>().initializeWithDummyHabit();
   }
 
   @override

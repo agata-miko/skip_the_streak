@@ -109,83 +109,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: const Text('Reminders'),
             onTap: () {
-              showDialog(
+              showModalBottomSheet(
                 context: context,
+                isScrollControlled: true, // Allows for full-height modals
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20)), // Rounded corners for the modal
+                ),
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Reminders'),
-                    content: Column(
-                      children: [
-                        Text(
-                            'At Skip the Streak, we believe that a no-pressure environment is the best way to foster true progress.\n\nHowever, if you feel like you could use a gentle nudge once a day, you can set it up right here.'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Reminder',
-                                  // Changed from 'Start Date' to 'Reminder'
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                            Switch(
-                              value: context.watch<ReminderCubit>().state.isSwitched,
-                              onChanged: (bool value) {
-                                context.read<ReminderCubit>().toggleTheme(value);
-                              },),
-                          ],
-                        ),
-                        if (context.read<ReminderCubit>().state.isSwitched)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Time',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    TextButton(
-                                      onPressed: _selectTime,
-                                      child: Text(
-                                        _selectedTime == null
-                                            ? 'Pick a time'
-                                            : '${_selectedTime!.format(context)}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: FractionallySizedBox(
+                      heightFactor: 0.9, // Use 90% of the screen height
+                      child: ReminderScreen(),
                     ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                        child: Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Add any action for the second button here
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
                   );
                 },
               );

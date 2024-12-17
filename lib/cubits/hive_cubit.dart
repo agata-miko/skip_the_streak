@@ -30,4 +30,24 @@ class HiveCubit extends Cubit<HiveState> {
     await habitBox.deleteAt(index);
     loadHabits(); // Reload habits after deleting
   }
+
+  // Add a method to check and add a dummy habit if no habits exist
+  void initializeWithDummyHabit() async {
+    emit(HiveLoading());
+    try {
+      if (habitBox.isEmpty) {
+        final dummyHabit = Habit(
+          title: 'Example Habit',
+          description: 'This is a placeholder habit. Tap to edit or remove.',
+          number: 0,
+          imagePath: 'assets/images/example.png',
+        );
+        await habitBox.add(dummyHabit);
+      }
+      loadHabits();
+    } catch (e) {
+      emit(HiveStateError("Failed to initialize with dummy habit: $e"));
+    }
+  }
+
 }
