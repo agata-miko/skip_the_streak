@@ -61,7 +61,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                       isScrollControlled: true, // Allows for full-height modals
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20)), // Rounded corners for the modal
+                            top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
                       ),
                       builder: (BuildContext context) {
                         return ClipRRect(
@@ -137,11 +137,11 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
               isScrollControlled: true, // Allows for full-height modals
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20)), // Rounded corners for the modal
+                    top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
               ),
               builder: (BuildContext context) {
                 return ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.zero),
                   child: FractionallySizedBox(
                     heightFactor: 0.9, // Use 90% of the screen height
                     child: AddHabitScreen(),
