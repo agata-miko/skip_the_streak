@@ -9,28 +9,54 @@ import '../cubits/hive_cubit.dart';
 import '../constants/image_assets.dart';
 
 class EditHabitScreen extends StatefulWidget {
-  const EditHabitScreen({super.key});
+  final Habit habit;
+
+  const EditHabitScreen({super.key, required this.habit});
 
   @override
   State<EditHabitScreen> createState() => _EditHabitScreenState();
 }
 
 class _EditHabitScreenState extends State<EditHabitScreen> {
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  DateTime? _selectedDate;
+
+  late bool _isSwitched;
+  bool _isSwitched_2 = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<CarouselCubit>().selectImage(null);
+    // Set the initial values from the passed habit
+    _titleController.text = widget.habit.title;
+    print(_titleController.text);
+    _descriptionController.text = widget.habit.description ?? '';
+    print(_descriptionController.text);
+    _selectedDate = widget.habit.startDate;
+    _isSwitched = widget.habit.startDate != null;
+    context.read<CarouselCubit>().selectImage(widget.habit.imagePath);
   }
 
-  bool _isSwitched = false;
-  bool _isSwitched_2 = false;
-  DateTime? _selectedDate;
+  // Function to save the edited habit
+  Future<void> _editHabit() async {
+    final updatedHabit = Habit(
+      id: widget.habit.id,
+      title: _titleController.text,
+      description: _descriptionController.text,
+      startDate: _isSwitched ? _selectedDate : null,
+      isTapped: widget.habit.isTapped,
+      imagePath: context.read<CarouselCubit>().state ?? widget.habit.imagePath,
+      number: widget.habit.number,
+    );
 
-  final ScrollController _scrollController = ScrollController();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+    context.read<HiveCubit>().updateHabit(widget.habit.id, updatedHabit);
 
+    Navigator.pop(context);
+  }
+
+  // Date picker function
   Future<void> _selectDate() async {
     DateTime now = DateTime.now();
     DateTime? picked = await showDatePicker(
@@ -47,6 +73,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     }
   }
 
+
   // Function to scroll to the milestone picker
   void _scrollToMilestonePicker() {
     // Delay to allow the UI to update
@@ -57,22 +84,6 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
         curve: Curves.easeInOut,
       );
     });
-  }
-
-  void _addHabit() {
-    final selectedImage = context.read<CarouselCubit>().state;
-    final newHabit = Habit(
-      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png', //generic sts image
-      title: _titleController.text,
-      description: _descriptionController.text,
-      startDate: _selectedDate,
-      // Add other properties as needed
-    );
-
-    context
-        .read<HiveCubit>()
-        .addHabit(newHabit); // Call the addHabit method from HiveCubit
-    Navigator.pop(context); // Go back to the previous screen
   }
 
   @override
@@ -127,6 +138,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  controller: _titleController,
                   onChanged: (value) {
                     (_titleController.text = value);
                   },
@@ -149,6 +161,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  controller: _descriptionController,
                   onChanged: (value) {
                     (_descriptionController.text = value);
                   },
@@ -182,10 +195,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                         const SizedBox(width: 5),
                         IconButton(
-                          icon: const Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline,
+                              color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Info about Start Date')),
+                              const SnackBar(
+                                  content: Text('Info about Start Date')),
                             );
                           },
                         ),
@@ -255,10 +270,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                         const SizedBox(width: 5),
                         IconButton(
-                          icon: const Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline,
+                              color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Info about Milestone')),
+                              const SnackBar(
+                                  content: Text('Info about Milestone')),
                             );
                           },
                         ),
@@ -284,8 +301,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: _addHabit,
-                  child: const Text('Add habit'),
+                  onPressed: _editHabit,
+                  child: Text(AppLocalizations.of(context)!.edit_habit),
                 ),
               ),
             ],

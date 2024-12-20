@@ -23,8 +23,17 @@ class HabitCard extends StatelessWidget {
               content: const Text(
                   'Are you sure you want to remove this habit? This cannot be undone.'),
               actions: [
-                TextButton(onPressed: () {Navigator.of(context).pop();}, child: const Text('Cancel')),
-                TextButton(onPressed: () {context.read<HiveCubit>().deleteHabit(habitId); Navigator.of(context).pop();}, child: const Text('Remove habit'))
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel')),
+                TextButton(
+                    onPressed: () {
+                      context.read<HiveCubit>().deleteHabit(habitId);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Remove habit'))
               ],
             ));
   }
@@ -110,16 +119,35 @@ class HabitCard extends StatelessWidget {
                         value: 'edit',
                         child: const Text('Edit'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const EditHabitScreen()));
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            // Allows for full-height modals
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                  bottom: Radius
+                                      .zero), // Rounded corners for the modal
+                            ),
+                            builder: (BuildContext context) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: FractionallySizedBox(
+                                  heightFactor: 0.9,
+                                  // Use 90% of the screen height
+                                  child: EditHabitScreen(habit: card),
+                                ),
+                              );
+                            },
+                          );
                         },
                       ),
                       PopupMenuItem<String>(
                         value: 'remove',
                         child: const Text('Remove'),
-                        onTap: () {_showDialog(context);},
+                        onTap: () {
+                          _showDialog(context);
+                        },
                       ),
                     ];
                   },
