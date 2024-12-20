@@ -16,6 +16,8 @@ class CarouselWidget extends StatefulWidget {
 class _CarouselWidgetState extends State<CarouselWidget> {
   @override
   Widget build(BuildContext context) {
+    final selectedImage = context.watch<CarouselCubit>().state;
+    
     return Container(
       height: MediaQuery.of(context).size.height * 0.25,
       width: MediaQuery.of(context).size.width,
@@ -29,15 +31,27 @@ class _CarouselWidgetState extends State<CarouselWidget> {
         ),
         items: widget.imgList.map((imagePath) {
           return InkWell(
-              onTap: () {
-                context.read<CarouselCubit>().selectImage(imagePath);
-              },
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                child: Image.asset(
-                  imagePath,
+            onTap: () {
+              context.read<CarouselCubit>().selectImage(imagePath);
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  child: Image.asset(
+                    imagePath
+                  ),
                 ),
-              ));
+                if (selectedImage != null && selectedImage == imagePath)
+                  Icon(
+                    Icons.check,
+                    size: 100,
+                    color: Colors.white.withOpacity(0.9),
+                  )
+              ],
+            ),
+          );
         }).toList(),
       ),
     );

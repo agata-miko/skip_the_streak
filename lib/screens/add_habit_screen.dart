@@ -18,6 +18,13 @@ class AddHabitScreen extends StatefulWidget {
 }
 
 class _AddHabitScreenState extends State<AddHabitScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+      context.read<CarouselCubit>().selectImage(null);
+  }
+
   bool _isSwitched = false;
   bool _isSwitched_2 = false;
   DateTime? _selectedDate;
