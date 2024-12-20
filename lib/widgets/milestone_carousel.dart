@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MilestoneCarousel extends StatefulWidget {
+  const MilestoneCarousel({super.key});
+
   @override
-  _MilestoneCarouselState createState() => _MilestoneCarouselState();
+  MilestoneCarouselState createState() => MilestoneCarouselState();
 }
 
-class _MilestoneCarouselState extends State<MilestoneCarousel> {
+class MilestoneCarouselState extends State<MilestoneCarousel> {
   int _selectedIndex = 0; // Track the selected item index
 
   @override
@@ -18,7 +20,7 @@ class _MilestoneCarouselState extends State<MilestoneCarousel> {
             itemExtent: 40, // Adjusted height of each item
             diameterRatio: 2,
             perspective: 0.01,
-            physics: FixedExtentScrollPhysics(),
+            physics: const FixedExtentScrollPhysics(),
             onSelectedItemChanged: (index) {
               setState(() {
                 _selectedIndex = index; // Update the selected item index

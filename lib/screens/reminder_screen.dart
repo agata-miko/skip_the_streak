@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'settings_screen.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({super.key});
@@ -98,16 +95,16 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Reminder', // Changed from 'Start Date' to 'Reminder'
                           style: TextStyle(fontSize: 16),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         IconButton(
-                          icon: Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline, color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Info about Reminder')),
+                              const SnackBar(content: Text('Info about Reminder')),
                             );
                           },
                         ),
@@ -133,7 +130,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Time',
                               style: TextStyle(fontSize: 16),
                             ),
@@ -142,8 +139,8 @@ class _ReminderScreenState extends State<ReminderScreen> {
                               child: Text(
                                 _selectedTime == null
                                     ? 'Pick a time'
-                                    : '${_selectedTime!.format(context)}',
-                                style: TextStyle(
+                                    : '_selectedTime!.format(context)',
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.blue,
                                 ),
@@ -155,7 +152,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     ),
                  ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.05,),
-                Center(child: ElevatedButton(onPressed: () {}, child: Text('Remind me!'))),
+                Center(child: ElevatedButton(onPressed: () {}, child: const Text('Remind me!'))),
               ],
             ),
           ),

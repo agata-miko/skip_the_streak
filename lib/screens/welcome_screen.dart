@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:skip_the_streak/screens/main_habits_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  WelcomeScreenState createState() => WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
+class WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late List<Animation<Offset>> _imageAnimations;
@@ -23,36 +25,36 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     // Define varied animations for each image with different placements
     _imageAnimations = [
       Tween<Offset>(
-        begin: Offset(2.0, -4.0), // Top left
-        end: Offset(0.1, -0.5), // Adjusted for better visibility
+        begin: const Offset(2.0, -4.0), // Top left
+        end: const Offset(0.1, -0.5), // Adjusted for better visibility
       ).animate(CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
       )),
       Tween<Offset>(
-        begin: Offset(2.0, -1.5), // Top right
-        end: Offset(0.8, -1.7), // Adjusted for better visibility
+        begin: const Offset(2.0, -1.5), // Top right
+        end: const Offset(0.8, -1.7), // Adjusted for better visibility
       ).animate(CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
       )),
       Tween<Offset>(
-        begin: Offset(-1.5, 1.0), // Bottom left
-        end: Offset(-0.8, -1.5), // Adjusted for better visibility
+        begin: const Offset(-1.5, 1.0), // Bottom left
+        end: const Offset(-0.8, -1.5), // Adjusted for better visibility
       ).animate(CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
       )),
       Tween<Offset>(
-        begin: Offset(1.5, 1.0), // Bottom right
-        end: Offset(0.5, 0.7), // Adjusted for better visibility
+        begin: const Offset(1.5, 1.0), // Bottom right
+        end: const Offset(0.5, 0.7), // Adjusted for better visibility
       ).animate(CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
       )),
       Tween<Offset>(
-        begin: Offset(0.0, -2.5), // Center top for yoga image
-        end: Offset(-0.5, 0.5), // Adjusted for better visibility
+        begin: const Offset(0.0, -2.5), // Center top for yoga image
+        end: const Offset(-0.5, 0.5), // Adjusted for better visibility
       ).animate(CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
@@ -84,7 +86,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
                 ),
-                Text(
+                const Text(
                   'Skip the Streak',
                   style: TextStyle(
                     fontSize: 50, // Increased text size
@@ -97,9 +99,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainHabitsScreen()));
+                              builder: (context) => const MainHabitsScreen()));
                     },
-                    child: Text('Get Started!')),
+                    child: const Text('Get Started!')),
               ],
             ),
           ],
@@ -129,9 +131,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return List<Widget>.generate(imagePaths.length, (index) {
       return SlideTransition(
         position: _imageAnimations[index],
-        child: Container(
-          width: sizes[index], // Use varying sizes
-          height: sizes[index], // Use varying sizes
+        child: SizedBox(
+          width: sizes[index],
+          height: sizes[index],
           child: Image.asset(
             imagePaths[index],
             fit: BoxFit.contain,

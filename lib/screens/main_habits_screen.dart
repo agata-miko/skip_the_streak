@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; // **<--- New import for Bloc**
-import '../cubits/hive_cubit.dart'; // **<--- New import for HiveCubit**
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubits/hive_cubit.dart';
 import 'package:skip_the_streak/screens/add_habit_screen.dart';
 import '../cubits/hive_state.dart';
 import 'settings_screen.dart';
 import '../widgets/habit_card.dart';
 
 class MainHabitsScreen extends StatefulWidget {
-  MainHabitsScreen({super.key});
+  const MainHabitsScreen({super.key});
 
   @override
   State<MainHabitsScreen> createState() => _MainHabitsScreenState();
@@ -28,8 +27,6 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context).toString();
-    final dayOfWeek = DateFormat('EEEE', locale).format(DateTime.now());
 
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
@@ -60,14 +57,14 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true, // Allows for full-height modals
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                             top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
                       ),
                       builder: (BuildContext context) {
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: FractionallySizedBox(
+                          child: const FractionallySizedBox(
                             heightFactor: 0.9, // Use 90% of the screen height
                             child: SettingsScreen(),
                           ),
@@ -90,7 +87,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                   // **<--- Using BlocBuilder to listen for state changes**
                   builder: (context, state) {
                     if (state is HiveLoading) {
-                      return Center(
+                      return const Center(
                           child:
                               CircularProgressIndicator()); // **<--- Show loading indicator while loading**
                     } else if (state is HiveLoaded) {
@@ -117,11 +114,11 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                         },
                       );
                     } else if (state is HiveError) {
-                      return Center(
+                      return const Center(
                           child: Text(
                               'Failed to load habits')); // **<--- Show error message**
                     }
-                    return Center(
+                    return const Center(
                         child: Text(
                             'No habits found')); // **<--- Default message if no habits**
                   },
@@ -131,17 +128,17 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           onPressed: () {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true, // Allows for full-height modals
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                     top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
               ),
               builder: (BuildContext context) {
-                return ClipRRect(
+                return const ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.zero),
                   child: FractionallySizedBox(
                     heightFactor: 0.9, // Use 90% of the screen height

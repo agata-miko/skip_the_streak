@@ -13,7 +13,7 @@ class AboutScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           Builder(
             builder: (BuildContext context) {
@@ -28,7 +28,7 @@ class AboutScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: SettingsScreen(),
+      drawer: const SettingsScreen(),
       body: Column(children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,

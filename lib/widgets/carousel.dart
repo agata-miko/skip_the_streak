@@ -7,7 +7,7 @@ class CarouselWidget extends StatefulWidget {
   final List<String> imgList;
 
   // Constructor to pass image list
-  CarouselWidget({required this.imgList});
+  const CarouselWidget({super.key, required this.imgList});
 
   @override
   State<CarouselWidget> createState() => _CarouselWidgetState();
@@ -18,7 +18,7 @@ class _CarouselWidgetState extends State<CarouselWidget> {
   Widget build(BuildContext context) {
     final selectedImage = context.watch<CarouselCubit>().state;
     
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.25,
       width: MediaQuery.of(context).size.width,
       child: CarouselSlider(

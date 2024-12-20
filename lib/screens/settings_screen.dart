@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/dark_theme_cubit.dart';
 import '../cubits/language_cubit.dart';
-import '../cubits/reminder_cubit.dart';
 import 'about_screen.dart';
-import 'add_habit_screen.dart';
 import 'reminder_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -58,13 +56,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 AppLocalizations.of(context)!.settings,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -114,14 +112,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true, // Allows for full-height modals
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                       top: Radius.circular(20)), // Rounded corners for the modal
                 ),
                 builder: (BuildContext context) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: FractionallySizedBox(
+                    child: const FractionallySizedBox(
                       heightFactor: 0.9, // Use 90% of the screen height
                       child: ReminderScreen(),
                     ),

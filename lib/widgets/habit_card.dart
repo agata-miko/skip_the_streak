@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skip_the_streak/models/habit.dart';
-import 'package:skip_the_streak/dummy_data/dummy_data.dart';
 import 'package:skip_the_streak/screens/edit_habit_screen.dart';
 
 import '../cubits/hive_cubit.dart';
@@ -20,12 +19,12 @@ class HabitCard extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Are you sure?'),
-              content: Text(
+              title: const Text('Are you sure?'),
+              content: const Text(
                   'Are you sure you want to remove this habit? This cannot be undone.'),
               actions: [
-                TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text('Cancel')),
-                TextButton(onPressed: () {context.read<HiveCubit>().deleteHabit(habitId); Navigator.of(context).pop();}, child: Text('Remove habit'))
+                TextButton(onPressed: () {Navigator.of(context).pop();}, child: const Text('Cancel')),
+                TextButton(onPressed: () {context.read<HiveCubit>().deleteHabit(habitId); Navigator.of(context).pop();}, child: const Text('Remove habit'))
               ],
             ));
   }
@@ -103,23 +102,23 @@ class HabitCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 PopupMenuButton<String>(
-                  icon: Icon(Icons.more_vert),
+                  icon: const Icon(Icons.more_vert),
                   onSelected: (value) {},
                   itemBuilder: (BuildContext context) {
                     return [
                       PopupMenuItem<String>(
                         value: 'edit',
-                        child: Text('Edit'),
+                        child: const Text('Edit'),
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditHabitScreen()));
+                                  builder: (context) => const EditHabitScreen()));
                         },
                       ),
                       PopupMenuItem<String>(
                         value: 'remove',
-                        child: Text('Remove'),
+                        child: const Text('Remove'),
                         onTap: () {_showDialog(context);},
                       ),
                     ];

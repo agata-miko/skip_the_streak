@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/carousel_cubit.dart';
 import '../models/habit.dart';
-import '../models/habit.dart';
 import '../widgets/carousel.dart';
-import 'settings_screen.dart';
 import '../widgets/milestone_carousel.dart';
 import '../cubits/hive_cubit.dart';
 import '../constants/image_assets.dart';
@@ -52,10 +50,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   // Function to scroll to the milestone picker
   void _scrollToMilestonePicker() {
     // Delay to allow the UI to update
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent, // Scroll to the bottom
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
@@ -134,14 +132,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   },
                   maxLength: 50,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Title'),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Title'),
                     helperText: 'The name of your habit, e.g. \'reading\'',
                     suffixIcon: IconButton(
                         onPressed: () {
                           _titleController.clear();
                         },
-                        icon: Icon(Icons.highlight_remove_outlined)),
+                        icon: const Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
               ),
@@ -156,14 +154,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   },
                   maxLength: 150,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Description'),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Description'),
                     helperText: 'Additional info, e.g. \'10 pages\' (optional)',
                     suffixIcon: IconButton(
                         onPressed: () {
                           _descriptionController.clear();
                         },
-                        icon: Icon(Icons.highlight_remove_outlined)),
+                        icon: const Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
               ),
@@ -180,14 +178,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.startDate,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         IconButton(
-                          icon: Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline, color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Info about Start Date')),
+                              const SnackBar(content: Text('Info about Start Date')),
                             );
                           },
                         ),
@@ -215,20 +213,20 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Select Start Date',
                             style: TextStyle(
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           TextButton(
                             onPressed: _selectDate,
                             child: Text(
                               _selectedDate == null
                                   ? 'Pick a date'
                                   : '${_selectedDate!.toLocal()}'.split(' ')[0],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                               ),
@@ -236,7 +234,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Space between the date picker and milestone
                     ],
                   ),
@@ -253,14 +251,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.milestone,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         IconButton(
-                          icon: Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline, color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Info about Milestone')),
+                              const SnackBar(content: Text('Info about Milestone')),
                             );
                           },
                         ),
@@ -280,14 +278,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ],
                 ),
               ),
-              if (_isSwitched_2) MilestoneCarousel(),
+              if (_isSwitched_2) const MilestoneCarousel(),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
               Center(
                 child: ElevatedButton(
                   onPressed: _addHabit,
-                  child: Text('Add habit'),
+                  child: const Text('Add habit'),
                 ),
               ),
             ],

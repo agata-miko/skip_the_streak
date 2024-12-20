@@ -36,8 +36,6 @@ class HiveCubit extends Cubit<HiveState> {
       if (keyToDelete != null) {
         await habitBox.delete(keyToDelete);
         loadHabits();
-      } else {
-        print("Habit not found with id: $habitId");
       }
     } catch (e) {
       emit(HiveStateError("Failed to delete habit: $e"));

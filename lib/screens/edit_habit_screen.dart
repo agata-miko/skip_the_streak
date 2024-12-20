@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../cubits/carousel_cubit.dart';
+import '../models/habit.dart';
 import '../widgets/carousel.dart';
-import 'settings_screen.dart';
 import '../widgets/milestone_carousel.dart';
+import '../cubits/hive_cubit.dart';
+import '../constants/image_assets.dart';
 
 class EditHabitScreen extends StatefulWidget {
   const EditHabitScreen({super.key});
@@ -12,18 +16,20 @@ class EditHabitScreen extends StatefulWidget {
 }
 
 class _EditHabitScreenState extends State<EditHabitScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<CarouselCubit>().selectImage(null);
+  }
+
   bool _isSwitched = false;
   bool _isSwitched_2 = false;
   DateTime? _selectedDate;
-  final List<String> imgList = [
-    'lib/assets/images/dummy_books.png',
-    'lib/assets/images/dummy_dog.png',
-    'lib/assets/images/dummy_joga.png',
-    'lib/assets/images/dummy_water.png',
-    'lib/assets/images/dummy_joga.png',
-  ];
 
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   Future<void> _selectDate() async {
     DateTime now = DateTime.now();
@@ -44,13 +50,29 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   // Function to scroll to the milestone picker
   void _scrollToMilestonePicker() {
     // Delay to allow the UI to update
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent, // Scroll to the bottom
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
+  }
+
+  void _addHabit() {
+    final selectedImage = context.read<CarouselCubit>().state;
+    final newHabit = Habit(
+      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png', //generic sts image
+      title: _titleController.text,
+      description: _descriptionController.text,
+      startDate: _selectedDate,
+      // Add other properties as needed
+    );
+
+    context
+        .read<HiveCubit>()
+        .addHabit(newHabit); // Call the addHabit method from HiveCubit
+    Navigator.pop(context); // Go back to the previous screen
   }
 
   @override
@@ -58,27 +80,22 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // title: Text('New habit'),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          scrolledUnderElevation: 0,
           actions: [
             Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: const Icon(Icons.settings), // Settings icon
+                  icon: const Icon(Icons.close), // Settings icon
                   onPressed: () {
-                    // Open the drawer when settings icon is tapped
-                    Scaffold.of(context).openDrawer();
+                    Navigator.pop(context);
                   },
                 );
               },
             ),
           ],
         ),
-        drawer: SettingsScreen(),
         body: SingleChildScrollView(
           controller: _scrollController, // Attach the scroll controller
           child: Column(
@@ -110,14 +127,19 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  onChanged: (value) {
+                    (_titleController.text = value);
+                  },
                   maxLength: 50,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Title'),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Title'),
                     helperText: 'The name of your habit, e.g. \'reading\'',
                     suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.highlight_remove_outlined)),
+                        onPressed: () {
+                          _titleController.clear();
+                        },
+                        icon: const Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
               ),
@@ -127,14 +149,19 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
+                  onChanged: (value) {
+                    (_descriptionController.text = value);
+                  },
                   maxLength: 150,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Description'),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Description'),
                     helperText: 'Additional info, e.g. \'10 pages\' (optional)',
                     suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.highlight_remove_outlined)),
+                        onPressed: () {
+                          _descriptionController.clear();
+                        },
+                        icon: const Icon(Icons.highlight_remove_outlined)),
                   ),
                 ),
               ),
@@ -151,14 +178,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.startDate,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         IconButton(
-                          icon: Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline, color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Info about Start Date')),
+                              const SnackBar(content: Text('Info about Start Date')),
                             );
                           },
                         ),
@@ -186,20 +213,20 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Select Start Date',
                             style: TextStyle(
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           TextButton(
                             onPressed: _selectDate,
                             child: Text(
                               _selectedDate == null
                                   ? 'Pick a date'
                                   : '${_selectedDate!.toLocal()}'.split(' ')[0],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                               ),
@@ -207,7 +234,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Space between the date picker and milestone
                     ],
                   ),
@@ -224,14 +251,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.milestone,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         IconButton(
-                          icon: Icon(Icons.info_outline, color: Colors.grey),
+                          icon: const Icon(Icons.info_outline, color: Colors.grey),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Info about Milestone')),
+                              const SnackBar(content: Text('Info about Milestone')),
                             );
                           },
                         ),
@@ -251,12 +278,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   ],
                 ),
               ),
-              if (_isSwitched_2) MilestoneCarousel(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+              if (_isSwitched_2) const MilestoneCarousel(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Save changes'),
+                  onPressed: _addHabit,
+                  child: const Text('Add habit'),
                 ),
               ),
             ],
