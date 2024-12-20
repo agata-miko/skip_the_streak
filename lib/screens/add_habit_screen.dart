@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../cubits/carousel_cubit.dart';
 import '../models/habit.dart';
 import '../models/habit.dart';
 import '../widgets/carousel.dart';
 import 'settings_screen.dart';
 import '../widgets/milestone_carousel.dart';
 import '../cubits/hive_cubit.dart';
+import '../constants/image_assets.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -19,13 +21,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   bool _isSwitched = false;
   bool _isSwitched_2 = false;
   DateTime? _selectedDate;
-  final List<String> imgList = [
-    'lib/assets/images/dummy_books.png',
-    'lib/assets/images/dummy_dog.png',
-    'lib/assets/images/dummy_joga.png',
-    'lib/assets/images/dummy_water.png',
-    'lib/assets/images/dummy_joga.png',
-  ];
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _titleController = TextEditingController();
@@ -60,8 +55,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   }
 
   void _addHabit() {
+    final selectedImage = context.read<CarouselCubit>().state;
     final newHabit = Habit(
-      imagePath: 'lib/assets/images/dummy_books.png',
+      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png', //generic sts image
       title: _titleController.text,
       description: _descriptionController.text,
       startDate: _selectedDate,
@@ -80,6 +76,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          elevation: 0,
+          scrolledUnderElevation: 0,
           actions: [
             Builder(
               builder: (BuildContext context) {

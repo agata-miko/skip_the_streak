@@ -40,6 +40,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         actions: [
           Builder(
             builder: (BuildContext context) {

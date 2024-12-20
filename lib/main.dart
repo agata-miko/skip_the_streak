@@ -14,6 +14,7 @@ import 'package:skip_the_streak/screens/welcome_screen.dart';
 import 'package:skip_the_streak/widgets/habit_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'adapters/habit_adapter.dart';
+import 'cubits/carousel_cubit.dart';
 import 'cubits/dark_theme_cubit.dart';
 import 'cubits/hive_cubit.dart';
 import 'cubits/language_cubit.dart';
@@ -38,6 +39,9 @@ void main() async {
         BlocProvider(
           create: (context) => HiveCubit(habitBox), // Pass the opened box to HiveCubit
         ),
+        BlocProvider<CarouselCubit>(
+          create: (context) => CarouselCubit(),
+        )
       ],
       child: const MyApp(),
     ),

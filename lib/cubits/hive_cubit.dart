@@ -40,7 +40,7 @@ class HiveCubit extends Cubit<HiveState> {
           title: 'Example Habit',
           description: 'This is a placeholder habit. Tap to edit or remove.',
           number: 0,
-          imagePath: 'assets/images/example.png',
+          imagePath: 'lib/assets/images/dummy_dog.png',
         );
         await habitBox.add(dummyHabit);
       }

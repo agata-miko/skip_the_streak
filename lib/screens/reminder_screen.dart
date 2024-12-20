@@ -38,6 +38,8 @@ class _ReminderScreenState extends State<ReminderScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          elevation: 0,
+          scrolledUnderElevation: 0,
           actions: [
             Builder(
               builder: (BuildContext context) {

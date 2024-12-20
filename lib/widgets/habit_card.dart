@@ -36,7 +36,7 @@ class HabitCard extends StatelessWidget {
     final double fontSizeNumber = screenWidth * 0.05;
 
     return Card(
-      elevation: 4,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
