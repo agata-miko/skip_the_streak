@@ -39,6 +39,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          scrolledUnderElevation: 0,
           title: Builder(
             builder: (BuildContext context) {
               final locale = Localizations.localeOf(context).toString(); // Get current locale
@@ -111,8 +112,8 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                           final habit =
                               habits[index]; // **<--- Get each habit**
                           return HabitCard(
-                              card:
-                                  habit); // **<--- Pass the habit to the HabitCard**
+                              card: habit,
+                          habitId: habit.id); // **<--- Pass the habit to the HabitCard**
                         },
                       );
                     } else if (state is HiveError) {

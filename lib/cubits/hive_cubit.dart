@@ -26,12 +26,25 @@ class HiveCubit extends Cubit<HiveState> {
   }
 
   // Delete a habit by index
-  Future<void> deleteHabit(int index) async {
-    await habitBox.deleteAt(index);
-    loadHabits(); // Reload habits after deleting
+  Future<void> deleteHabit(String habitId) async {
+    try {
+      final keyToDelete = habitBox.keys.firstWhere(
+        (key) => habitBox.get(key)!.id == habitId,
+        orElse: () => null,
+      );
+
+      if (keyToDelete != null) {
+        await habitBox.delete(keyToDelete);
+        loadHabits();
+      } else {
+        print("Habit not found with id: $habitId");
+      }
+    } catch (e) {
+      emit(HiveStateError("Failed to delete habit: $e"));
+    }
   }
 
-  // Add a method to check and add a dummy habit if no habits exist
+// Add a method to check and add a dummy habit if no habits exist
   void initializeWithDummyHabit() async {
     emit(HiveLoading());
     try {
@@ -49,5 +62,4 @@ class HiveCubit extends Cubit<HiveState> {
       emit(HiveStateError("Failed to initialize with dummy habit: $e"));
     }
   }
-
 }

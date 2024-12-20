@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skip_the_streak/models/habit.dart';
 import 'package:skip_the_streak/dummy_data/dummy_data.dart';
 import 'package:skip_the_streak/screens/edit_habit_screen.dart';
+
+import '../cubits/hive_cubit.dart';
 
 class HabitCard extends StatelessWidget {
   const HabitCard({
     super.key,
     required this.card,
+    required this.habitId,
   });
 
   final Habit card;
+  final String habitId;
 
   void _showDialog(BuildContext context) {
     showDialog(
@@ -20,7 +25,7 @@ class HabitCard extends StatelessWidget {
                   'Are you sure you want to remove this habit? This cannot be undone.'),
               actions: [
                 TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text('Cancel')),
-                TextButton(onPressed: () {}, child: Text('Remove habit'))
+                TextButton(onPressed: () {context.read<HiveCubit>().deleteHabit(habitId); Navigator.of(context).pop();}, child: Text('Remove habit'))
               ],
             ));
   }
