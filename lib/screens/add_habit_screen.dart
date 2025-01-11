@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/carousel_cubit.dart';
+import '../cubits/start_date_cubit.dart';
 import '../models/habit.dart';
 import '../widgets/carousel.dart';
 import '../widgets/milestone_carousel.dart';
@@ -16,43 +17,20 @@ class AddHabitScreen extends StatefulWidget {
 }
 
 class _AddHabitScreenState extends State<AddHabitScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-      context.read<CarouselCubit>().selectImage(null);
-  }
-
-  bool _isSwitched = false;
-  bool _isSwitched_2 = false;
-  DateTime? _selectedDate;
-
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  Future<void> _selectDate() async {
-    DateTime now = DateTime.now();
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? now,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
+    context.read<CarouselCubit>().selectImage(null);
   }
 
-  // Function to scroll to the milestone picker
   void _scrollToMilestonePicker() {
-    // Delay to allow the UI to update
     Future.delayed(const Duration(milliseconds: 300), () {
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent, // Scroll to the bottom
+        _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
@@ -61,18 +39,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   void _addHabit() {
     final selectedImage = context.read<CarouselCubit>().state;
+    final startDateState = context.read<StartDateCubit>().state;
+
     final newHabit = Habit(
-      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png', //generic sts image
+      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png',
       title: _titleController.text,
       description: _descriptionController.text,
-      startDate: _selectedDate,
-      // Add other properties as needed
+      startDate: startDateState.isDateSet ? startDateState.startDate : null,
     );
 
-    context
-        .read<HiveCubit>()
-        .addHabit(newHabit); // Call the addHabit method from HiveCubit
-    Navigator.pop(context); // Go back to the previous screen
+    context.read<HiveCubit>().addHabit(newHabit);
+    Navigator.pop(context);
   }
 
   @override
@@ -84,41 +61,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           elevation: 0,
           scrolledUnderElevation: 0,
           actions: [
-            Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(Icons.close), // Settings icon
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                );
-              },
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
         body: SingleChildScrollView(
-          controller: _scrollController, // Attach the scroll controller
+          controller: _scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Padding(
-              //   padding: EdgeInsets.symmetric(
-              //       horizontal: MediaQuery.of(context).size.width * 0.04,
-              //       vertical: MediaQuery.of(context).size.height * 0.02),
-              //   child: Text(
-              //     'New habit',
-              //     style: TextStyle(
-              //       fontSize: 24,
-              //       // Slightly smaller for better balance
-              //       color: Theme.of(context).colorScheme.primary,
-              //       fontWeight: FontWeight.bold,
-              //       // Reduce to 'bold' for cleaner look
-              //       letterSpacing: 0.8,
-              //       // Subtle letter spacing for refinement
-              //       height: 1.4, // Adjust line height for better spacing
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               CarouselWidget(imgList: imgList),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -127,19 +80,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
-                  onChanged: (value) {
-                    (_titleController.text = value);
-                  },
+                  controller: _titleController,
                   maxLength: 50,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     label: const Text('Title'),
                     helperText: 'The name of your habit, e.g. \'reading\'',
                     suffixIcon: IconButton(
-                        onPressed: () {
-                          _titleController.clear();
-                        },
-                        icon: const Icon(Icons.highlight_remove_outlined)),
+                      onPressed: _titleController.clear,
+                      icon: const Icon(Icons.highlight_remove_outlined),
+                    ),
                   ),
                 ),
               ),
@@ -149,139 +99,81 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   horizontal: MediaQuery.of(context).size.width * 0.04,
                 ),
                 child: TextField(
-                  onChanged: (value) {
-                    (_descriptionController.text = value);
-                  },
+                  controller: _descriptionController,
                   maxLength: 150,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     label: const Text('Description'),
                     helperText: 'Additional info, e.g. \'10 pages\' (optional)',
                     suffixIcon: IconButton(
-                        onPressed: () {
-                          _descriptionController.clear();
-                        },
-                        icon: const Icon(Icons.highlight_remove_outlined)),
+                      onPressed: _descriptionController.clear,
+                      icon: const Icon(Icons.highlight_remove_outlined),
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.04,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+              BlocBuilder<StartDateCubit, StartDateState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.startDate,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(width: 5),
-                        IconButton(
-                          icon: const Icon(Icons.info_outline, color: Colors.grey),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Info about Start Date')),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Switch(
-                      value: _isSwitched,
-                      onChanged: (value) {
-                        setState(() {
-                          _isSwitched = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              if (_isSwitched)
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.04,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Select Start Date',
-                            style: TextStyle(
-                              fontSize: 16,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.startDate,
+                              style: const TextStyle(fontSize: 16),
                             ),
-                          ),
-                          const SizedBox(width: 5),
-                          TextButton(
-                            onPressed: _selectDate,
-                            child: Text(
-                              _selectedDate == null
-                                  ? 'Pick a date'
-                                  : '${_selectedDate!.toLocal()}'.split(' ')[0],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
+                            Switch(
+                              value: state.isDateSet,
+                              onChanged: (value) {
+                                context.read<StartDateCubit>().toggleStartDate(value);
+                              },
+                            ),
+                          ],
+                        ),
+                        if (state.isDateSet)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Selected Date:', style: TextStyle(fontSize: 16)),
+                              TextButton(
+                                onPressed: () async {
+                                  DateTime now = DateTime.now();
+                                  DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: state.startDate ?? now,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2101),
+                                  );
+
+                                  if (picked != null) {
+                                    context.read<StartDateCubit>().setStartDate(picked);
+                                  }
+                                },
+                                child: Text(
+                                  state.startDate == null
+                                      ? 'Pick a date'
+                                      : '${state.startDate!.toLocal()}'.split(' ')[0],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      // Space between the date picker and milestone
-                    ],
-                  ),
-                ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.04,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.milestone,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(width: 5),
-                        IconButton(
-                          icon: const Icon(Icons.info_outline, color: Colors.grey),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Info about Milestone')),
-                            );
-                          },
-                        ),
                       ],
                     ),
-                    Switch(
-                      value: _isSwitched_2,
-                      onChanged: (value) {
-                        setState(() {
-                          _isSwitched_2 = value;
-                          if (_isSwitched_2) {
-                            _scrollToMilestonePicker(); // Auto-scroll to milestone picker
-                          }
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-              if (_isSwitched_2) const MilestoneCarousel(),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Center(
                 child: ElevatedButton(
                   onPressed: _addHabit,

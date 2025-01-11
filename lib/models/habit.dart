@@ -24,7 +24,7 @@ class Habit {
   @HiveField(6)
   bool isTapped;
 
-  Habit({
+  Habit ({
     String? id,
     required this.imagePath,
     required this.title,
@@ -33,4 +33,26 @@ class Habit {
     this.startDate,
     this.isTapped = false,
   }) : id = id ?? const Uuid().v4();
+}
+
+extension HabitExtension on Habit {
+  Habit copyWith({
+    String? id,
+    String? imagePath,
+    String? title,
+    String? description,
+    int? number,
+    DateTime? startDate,
+    bool? isTapped,
+  }) {
+    return Habit(
+      id: id ?? this.id,
+      imagePath: imagePath ?? this.imagePath,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      number: number ?? this.number,
+      startDate: startDate ?? this.startDate,
+      isTapped: isTapped ?? this.isTapped,
+    );
+  }
 }

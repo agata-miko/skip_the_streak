@@ -69,12 +69,20 @@ class MaterialTheme {
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      textTheme: textTheme.apply(
-        bodyColor: colorScheme.onSurface,
-        displayColor: colorScheme.onSurface,
-      ),
+      textTheme: _buildTextTheme(colorScheme),
       scaffoldBackgroundColor: colorScheme.surface,
       canvasColor: colorScheme.surface,
+    );
+  }
+
+  TextTheme _buildTextTheme(ColorScheme colorScheme) {
+    return textTheme.apply(
+      bodyColor: colorScheme.onSurface,
+      displayColor: colorScheme.onSurface,
+    ).copyWith(
+      // Customize text styles if needed
+      titleLarge: textTheme.titleLarge?.copyWith(fontFamily: 'Lato'),
+      bodyMedium: textTheme.bodyMedium?.copyWith(fontFamily: 'Lato'),
     );
   }
 }

@@ -58,6 +58,25 @@ class HiveCubit extends Cubit<HiveState> {
     }
   }
 
+  Future<void> incrementHabitNumber(String habitId) async {
+    try {
+      final keyToUpdate = habitBox.keys.firstWhere(
+          (key) => habitBox.get(key)!.id == habitId,
+        orElse: () => null,
+      );
+
+      if (keyToUpdate != null) {
+        final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
+    number: habitBox.get(keyToUpdate)!.number + 1,
+    );
+        await habitBox.put(keyToUpdate, updatedHabit);
+        loadHabits();
+      }
+    } catch (e) {
+      emit(HiveStateError("Failed to increment habit number: $e"));
+    }
+  }
+
 // Add a method to check and add a dummy habit if no habits exist
   void initializeWithDummyHabit() async {
     emit(HiveLoading());
@@ -76,4 +95,22 @@ class HiveCubit extends Cubit<HiveState> {
       emit(HiveStateError("Failed to initialize with dummy habit: $e"));
     }
   }
+
+  Future<void> editStartDate(String habitId, DateTime startDate) async {
+    try {
+      final keyToUpdate = habitBox.keys.firstWhere(
+            (key) => habitBox.get(key)!.id == habitId,
+        orElse: () => null,
+      );
+
+      if (keyToUpdate != null) {
+        final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(startDate: startDate);
+        await habitBox.put(keyToUpdate, updatedHabit);
+        loadHabits();
+      }
+    } catch (e) {
+      emit(HiveStateError("Failed to save start date: $e"));
+    }
+  }
+
 }

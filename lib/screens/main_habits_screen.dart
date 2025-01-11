@@ -43,16 +43,17 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
               final now = DateTime.now(); // Current date
               final dayOfWeek = DateFormat('EEEE', locale).format(now); // Localized day
               final date = DateFormat('dd MMMM', locale).format(now); // Localized date
-              final titleText = '$dayOfWeek $date'; // Combine day and date
+              final titleText = '$dayOfWeek' ; // Combine day and date
 
-              return Text(titleText); // Display the localized title
+              return Text('Hello $titleText!'.toUpperCase(), style: Theme.of(context).textTheme.titleLarge?.copyWith( // Apply the theme's TextStyle
+                fontWeight: FontWeight.w900, color: Color(0xFFE7AC15).withOpacity(0.6))); // Display the localized title
             },
           ),
           actions: [
             Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: const Icon(Icons.settings), // Settings icon
+                  icon: const Icon(Icons.settings, color: Color(0xFFE7AC15),), // Settings icon
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -129,6 +130,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           shape: const CircleBorder(),
+          backgroundColor: Color(0xFFE7AC15),
           onPressed: () {
             showModalBottomSheet(
               context: context,

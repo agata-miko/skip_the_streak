@@ -4,4 +4,6 @@ final List<String> imgList = [
   'lib/assets/images/dummy_joga.png',
   'lib/assets/images/dummy_water.png',
   'lib/assets/images/dummy_joga.png',
+  'lib/assets/images/szklanka.png',
+  'lib/assets/images/dog.png',
 ];
