@@ -22,9 +22,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   final _descriptionController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   DateTime? _selectedDate;
+  int? _selectedMilestone;
 
-  late bool _isSwitched;
-  bool _isSwitched_2 = false;
+  late bool _isDateSwitched;
+  late bool _isMilestoneSwitched = false;
 
   @override
   void initState() {
@@ -35,7 +36,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     _descriptionController.text = widget.habit.description ?? '';
     print(_descriptionController.text);
     _selectedDate = widget.habit.startDate;
-    _isSwitched = widget.habit.startDate != null;
+    _isDateSwitched = widget.habit.startDate != null;
+    _selectedMilestone = widget.habit.milestone;
+    _isMilestoneSwitched = widget.habit.milestone != null;
     context.read<CarouselCubit>().selectImage(widget.habit.imagePath);
   }
 
@@ -45,10 +48,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       id: widget.habit.id,
       title: _titleController.text,
       description: _descriptionController.text,
-      startDate: _isSwitched ? _selectedDate : null,
+      startDate: _isDateSwitched ? _selectedDate : null,
       isTapped: widget.habit.isTapped,
       imagePath: context.read<CarouselCubit>().state ?? widget.habit.imagePath,
       number: widget.habit.number,
+      milestone: widget.habit.milestone,
     );
 
     context.read<HiveCubit>().updateHabit(widget.habit.id, updatedHabit);
@@ -207,17 +211,17 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ],
                     ),
                     Switch(
-                      value: _isSwitched,
+                      value: _isDateSwitched,
                       onChanged: (value) {
                         setState(() {
-                          _isSwitched = value;
+                          _isDateSwitched = value;
                         });
                       },
                     ),
                   ],
                 ),
               ),
-              if (_isSwitched)
+              if (_isDateSwitched)
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * 0.04,
@@ -282,11 +286,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ],
                     ),
                     Switch(
-                      value: _isSwitched_2,
+                      value: _isMilestoneSwitched,
                       onChanged: (value) {
                         setState(() {
-                          _isSwitched_2 = value;
-                          if (_isSwitched_2) {
+                          _isMilestoneSwitched = value;
+                          if (_isMilestoneSwitched) {
                             _scrollToMilestonePicker(); // Auto-scroll to milestone picker
                           }
                         });
@@ -295,7 +299,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   ],
                 ),
               ),
-              if (_isSwitched_2) const MilestoneCarousel(),
+              if (_isMilestoneSwitched) const MilestoneCarousel(),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),

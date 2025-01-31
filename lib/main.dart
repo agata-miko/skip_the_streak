@@ -10,7 +10,9 @@ import 'cubits/carousel_cubit.dart';
 import 'cubits/dark_theme_cubit.dart';
 import 'cubits/hive_cubit.dart';
 import 'cubits/language_cubit.dart';
+import 'cubits/milestone_cubit.dart';
 import 'cubits/reminder_cubit.dart';
+import 'cubits/start_date_cubit.dart';
 import 'models/habit.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => LanguageCubit()),
+        BlocProvider(create: (context) => StartDateCubit()),
+        BlocProvider(create: (context) => MilestoneCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {

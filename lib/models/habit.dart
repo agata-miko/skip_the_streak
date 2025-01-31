@@ -24,6 +24,9 @@ class Habit {
   @HiveField(6)
   bool isTapped;
 
+  @HiveField(7)
+  int? milestone;
+
   Habit ({
     String? id,
     required this.imagePath,
@@ -32,6 +35,7 @@ class Habit {
     this.number = 0,
     this.startDate,
     this.isTapped = false,
+    this.milestone,
   }) : id = id ?? const Uuid().v4();
 }
 
@@ -44,6 +48,7 @@ extension HabitExtension on Habit {
     int? number,
     DateTime? startDate,
     bool? isTapped,
+    int? milestone,
   }) {
     return Habit(
       id: id ?? this.id,
@@ -53,6 +58,7 @@ extension HabitExtension on Habit {
       number: number ?? this.number,
       startDate: startDate ?? this.startDate,
       isTapped: isTapped ?? this.isTapped,
+      milestone: milestone ?? this.milestone,
     );
   }
 }

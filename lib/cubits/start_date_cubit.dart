@@ -15,6 +15,10 @@ class StartDateCubit extends Cubit<StartDateState> {
     emit(StartDateState(isDateSet: !state.isDateSet));
   }
 
+  void resetStartDate() {
+    emit(const StartDateState(isDateSet: false));
+  }
+
   void setStartDate(DateTime date) {
     emit(StartDateState(isDateSet: true, startDate: date));
   }

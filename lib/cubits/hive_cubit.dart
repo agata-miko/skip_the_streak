@@ -86,7 +86,7 @@ class HiveCubit extends Cubit<HiveState> {
           title: 'Example Habit',
           description: 'This is a placeholder habit. Tap to edit or remove.',
           number: 0,
-          imagePath: 'lib/assets/images/dummy_dog.png',
+          imagePath: 'lib/assets/images/tick_lines.png',
         );
         await habitBox.add(dummyHabit);
       }
@@ -105,6 +105,23 @@ class HiveCubit extends Cubit<HiveState> {
 
       if (keyToUpdate != null) {
         final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(startDate: startDate);
+        await habitBox.put(keyToUpdate, updatedHabit);
+        loadHabits();
+      }
+    } catch (e) {
+      emit(HiveStateError("Failed to save start date: $e"));
+    }
+  }
+
+  Future<void> editMilestone(String habitId, int milestone) async {
+    try {
+      final keyToUpdate = habitBox.keys.firstWhere(
+            (key) => habitBox.get(key)!.id == habitId,
+        orElse: () => null,
+      );
+
+      if (keyToUpdate != null) {
+        final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(milestone: milestone);
         await habitBox.put(keyToUpdate, updatedHabit);
         loadHabits();
       }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/carousel_cubit.dart';
+import '../cubits/milestone_cubit.dart';
 import '../cubits/start_date_cubit.dart';
 import '../models/habit.dart';
 import '../widgets/carousel.dart';
@@ -21,10 +22,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
+
+
   @override
   void initState() {
     super.initState();
     context.read<CarouselCubit>().selectImage(null);
+    context.read<MilestoneCubit>().resetMilestone();
+    context.read<StartDateCubit>().resetStartDate();
   }
 
   void _scrollToMilestonePicker() {
@@ -40,12 +45,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   void _addHabit() {
     final selectedImage = context.read<CarouselCubit>().state;
     final startDateState = context.read<StartDateCubit>().state;
+    final milestone = context.read<MilestoneCubit>().state;
 
     final newHabit = Habit(
       imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png',
       title: _titleController.text,
       description: _descriptionController.text,
       startDate: startDateState.isDateSet ? startDateState.startDate : null,
+      milestone: milestone.isMilestoneSet ? milestone.milestone : null,
     );
 
     context.read<HiveCubit>().addHabit(newHabit);
@@ -132,7 +139,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                             Switch(
                               value: state.isDateSet,
                               onChanged: (value) {
-                                context.read<StartDateCubit>().toggleStartDate(value);
+                                context
+                                    .read<StartDateCubit>()
+                                    .toggleStartDate(value);
                               },
                             ),
                           ],
@@ -141,7 +150,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Selected Date:', style: TextStyle(fontSize: 16)),
+                              const Text('Selected Date:',
+                                  style: TextStyle(fontSize: 16)),
                               TextButton(
                                 onPressed: () async {
                                   DateTime now = DateTime.now();
@@ -153,13 +163,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                   );
 
                                   if (picked != null) {
-                                    context.read<StartDateCubit>().setStartDate(picked);
+                                    context
+                                        .read<StartDateCubit>()
+                                        .setStartDate(picked);
                                   }
                                 },
                                 child: Text(
                                   state.startDate == null
                                       ? 'Pick a date'
-                                      : '${state.startDate!.toLocal()}'.split(' ')[0],
+                                      : '${state.startDate!.toLocal()}'
+                                          .split(' ')[0],
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
@@ -173,7 +186,56 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   );
                 },
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              BlocBuilder<MilestoneCubit, MilestoneState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.milestone,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(width: 5),
+                                IconButton(
+                                  icon: const Icon(Icons.info_outline,
+                                      color: Colors.grey),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Info about Milestone')),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            Switch(
+                                value: state.isMilestoneSet,
+                                onChanged: (value) {
+                                  context
+                                      .read<MilestoneCubit>()
+                                      .toggleMilestone(value);
+                                }),
+                          ],
+                        ),
+                        if (state.isMilestoneSet) const MilestoneCarousel(),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
               Center(
                 child: ElevatedButton(
                   onPressed: _addHabit,
