@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:skip_the_streak/models/habit.dart';
 import 'package:skip_the_streak/screens/edit_habit_screen.dart';
 import '../cubits/hive_cubit.dart';
@@ -42,15 +43,22 @@ class HabitCard extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Details'),
-          content: card.description != null
+          content: Column(mainAxisSize: MainAxisSize.min, children: [card.description != null
               ? Text(
             card.description!,
-            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
             ),
           )
               : Text('No details, you\'re good to go!'),
+          if (card.startDate != null) Text('Start date: ${DateFormat('dd MMMM yyyy').format(card.startDate!).toString()}',
+            style: TextStyle(
+              fontSize: 15,
+            ),),
+            if (card.milestone != null) Text('Milestone: ${card.milestone!.toString()}!',textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 15,
+              ),),],),
           actions: [
             TextButton(
                 onPressed: () {
