@@ -45,14 +45,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   void _addHabit() {
     final selectedImage = context.read<CarouselCubit>().state;
     final startDateState = context.read<StartDateCubit>().state;
-    final milestone = context.read<MilestoneCubit>().state;
+    final milestone = context.read<MilestoneCubit>().state.milestone;
 
     final newHabit = Habit(
       imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png',
       title: _titleController.text,
       description: _descriptionController.text,
       startDate: startDateState.isDateSet ? startDateState.startDate : null,
-      milestone: milestone.isMilestoneSet ? milestone.milestone : null,
+      milestone: milestone!= null ? milestone : null,
     );
 
     context.read<HiveCubit>().addHabit(newHabit);
@@ -88,7 +88,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 ),
                 child: TextField(
                   controller: _titleController,
-                  maxLength: 50,
+                  maxLength: 25,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     label: const Text('Title'),
@@ -223,7 +223,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 onChanged: (value) {
                                   context
                                       .read<MilestoneCubit>()
-                                      .toggleMilestone(value);
+                                      .toggleMilestone();
                                 }),
                           ],
                         ),

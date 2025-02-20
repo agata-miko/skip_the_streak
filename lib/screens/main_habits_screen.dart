@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/hive_cubit.dart';
 import 'package:skip_the_streak/screens/add_habit_screen.dart';
 import '../cubits/hive_state.dart';
+import '../widgets/habit_layout.dart';
 import 'settings_screen.dart';
 import '../widgets/habit_card.dart';
 
@@ -19,15 +20,12 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<HiveCubit>()
-        .loadHabits();
+    context.read<HiveCubit>().loadHabits();
     context.read<HiveCubit>().initializeWithDummyHabit();
   }
 
   @override
   Widget build(BuildContext context) {
-
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final double cardPadding = screenWidth * 0.01;
@@ -39,28 +37,70 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
           scrolledUnderElevation: 0,
           title: Builder(
             builder: (BuildContext context) {
-              final locale = Localizations.localeOf(context).toString(); // Get current locale
+              final locale = Localizations.localeOf(context)
+                  .toString(); // Get current locale
               final now = DateTime.now(); // Current date
-              final dayOfWeek = DateFormat('EEEE', locale).format(now); // Localized day
-              final date = DateFormat('dd MMMM', locale).format(now); // Localized date
-              final titleText = '$dayOfWeek' ; // Combine day and date
+              final dayOfWeek =
+                  DateFormat('EEEE', locale).format(now); // Localized day
+              final date =
+                  DateFormat('dd MMMM', locale).format(now); // Localized date
+              final titleText = '$dayOfWeek'; // Combine day and date
 
-              return Text('Hello $titleText!'.toUpperCase(), style: Theme.of(context).textTheme.titleLarge?.copyWith( // Apply the theme's TextStyle
-                fontWeight: FontWeight.w900, color: Color(0xFFE7AC15).withOpacity(0.6))); // Display the localized title
+              return Text('$titleText'.toUpperCase(),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        // Apply the theme's TextStyle
+                        fontWeight: FontWeight.w900,
+                        fontSize: 40,
+                        color: Colors.black54,
+                      )); // Display the localized title
             },
           ),
           actions: [
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true, // Allows for full-height modals
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                          bottom: Radius.zero), // Rounded corners for the modal
+                    ),
+                    builder: (BuildContext context) {
+                      return const ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20), bottom: Radius.zero),
+                        child: FractionallySizedBox(
+                          heightFactor: 0.9, // Use 90% of the screen height
+                          child: AddHabitScreen(),
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.add_circle,
+                  size: 40,
+                  color: Colors.black54,
+                )),
             Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: const Icon(Icons.settings, color: Color(0xFFE7AC15),), // Settings icon
+                  icon: const Icon(
+                    Icons.settings,
+                    size: 40,
+                    color: Colors.black54,
+                  ),
+                  // Settings icon
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true, // Allows for full-height modals
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
+                            top: Radius.circular(20),
+                            bottom:
+                                Radius.zero), // Rounded corners for the modal
                       ),
                       builder: (BuildContext context) {
                         return ClipRRect(
@@ -77,6 +117,7 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
               },
             ),
           ],
+          toolbarHeight: 80,
         ),
         body: Padding(
           padding: EdgeInsets.all(cardPadding),
@@ -94,24 +135,18 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
                     } else if (state is HiveLoaded) {
                       final habits =
                           state.habits; // **<--- Get habits from state**
-                      return GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          // Two columns
-                          crossAxisSpacing: cardPadding,
-                          // Space between columns
-                          mainAxisSpacing: cardPadding,
-                          // Space between rows
-                          childAspectRatio: 1,
-                        ),
-                        itemCount: habits.length,
-                        // **<--- Use the number of habits**
-                        itemBuilder: (context, index) {
-                          final habit =
-                              habits[index]; // **<--- Get each habit**
-                          return HabitCard(
-                              card: habit,
-                          habitId: habit.id); // **<--- Pass the habit to the HabitCard**
+                      return BlocBuilder<HiveCubit, HiveState>(
+                        builder: (context, state) {
+                          if (state is HiveLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is HiveLoaded) {
+                            return HabitLayout(habits: state.habits);
+                          } else if (state is HiveError) {
+                            return const Center(
+                                child: Text('Failed to load habits'));
+                          }
+                          return const Center(child: Text('No habits found'));
                         },
                       );
                     } else if (state is HiveError) {
@@ -128,30 +163,35 @@ class _MainHabitsScreenState extends State<MainHabitsScreen> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          shape: const CircleBorder(),
-          backgroundColor: Color(0xFFE7AC15),
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true, // Allows for full-height modals
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
-              ),
-              builder: (BuildContext context) {
-                return const ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.zero),
-                  child: FractionallySizedBox(
-                    heightFactor: 0.9, // Use 90% of the screen height
-                    child: AddHabitScreen(),
-                  ),
-                );
-              },
-            );
-          },
-          child: const Icon(Icons.add),
-        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   shape: const CircleBorder(),
+        //   backgroundColor: Color(0xFFE7AC15),
+        //   onPressed: () {
+        //     showModalBottomSheet(
+        //       context: context,
+        //       isScrollControlled: true, // Allows for full-height modals
+        //       shape: const RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.vertical(
+        //             top: Radius.circular(20), bottom: Radius.zero), // Rounded corners for the modal
+        //       ),
+        //       builder: (BuildContext context) {
+        //         return const ClipRRect(
+        //           borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.zero),
+        //           child: FractionallySizedBox(
+        //             heightFactor: 0.9, // Use 90% of the screen height
+        //             child: AddHabitScreen(),
+        //           ),
+        //         );
+        //       },
+        //     );
+        //   },
+        //   child: const Icon(Icons.add),
+        // ),
+        // // bottomNavigationBar: BottomAppBar(
+        // //   shape: const CircularNotchedRectangle(),
+        // //   child: SizedBox(height: 50,),
+        // // ),
       ),
     );
   }

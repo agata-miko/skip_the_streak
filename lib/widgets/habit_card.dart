@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:skip_the_streak/cubits/hive_state.dart';
 import 'package:skip_the_streak/models/habit.dart';
 import 'package:skip_the_streak/screens/edit_habit_screen.dart';
 import '../cubits/hive_cubit.dart';
@@ -19,54 +20,63 @@ class HabitCard extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Are you sure?'),
-          content: const Text(
-              'Are you sure you want to remove this habit? This cannot be undone.'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Cancel')),
-            TextButton(
-                onPressed: () {
-                  context.read<HiveCubit>().deleteHabit(habitId);
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Remove habit'))
-          ],
-        ));
+              title: const Text('Are you sure?'),
+              content: const Text(
+                  'Are you sure you want to remove this habit? This cannot be undone.'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel')),
+                TextButton(
+                    onPressed: () {
+                      context.read<HiveCubit>().deleteHabit(habitId);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Remove habit'))
+              ],
+            ));
   }
 
   void _showDetailsDialog(BuildContext context) {
     showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Details'),
-          content: Column(mainAxisSize: MainAxisSize.min, children: [card.description != null
-              ? Text(
-            card.description!,
-            style: TextStyle(
-              fontSize: 15,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Details'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                card.description != null
+                    ? Text(
+                        card.description!,
+                        style: const TextStyle(fontSize: 15),
+                      )
+                    : const Text('No details, you\'re good to go!'),
+                if (card.startDate != null)
+                  Text(
+                    'Start date: ${DateFormat('dd MMMM yyyy').format(card.startDate!)}',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                if (card.milestone != null)
+                  Text(
+                    'Milestone: ${card.milestone!}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(fontSize: 15),
+                  ),
+              ],
             ),
-          )
-              : Text('No details, you\'re good to go!'),
-          if (card.startDate != null) Text('Start date: ${DateFormat('dd MMMM yyyy').format(card.startDate!).toString()}',
-            style: TextStyle(
-              fontSize: 15,
-            ),),
-            if (card.milestone != null) Text('Milestone: ${card.milestone!.toString()}!',textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 15,
-              ),),],),
-          actions: [
-            TextButton(
+            actions: [
+              TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Great!')),
-          ],
-        ));
+                child: const Text('Great!'),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -115,9 +125,10 @@ class HabitCard extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.white, // Make sure text is visible on the image
+                      color: Colors
+                          .white, // Make sure text is visible on the image
                     ),
-                    maxLines: 2,
+                    maxLines: 3,
                   ),
                 ),
                 Row(
@@ -131,7 +142,8 @@ class HabitCard extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 50,
-                          color: Colors.white, // Make sure text is visible on the image
+                          color: Colors
+                              .white, // Make sure text is visible on the image
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -140,7 +152,8 @@ class HabitCard extends StatelessWidget {
                     PopupMenuButton<String>(
                       icon: const Icon(
                         Icons.more_vert,
-                        color: Colors.white, // Change icon color to match the overlay
+                        color: Colors
+                            .white, // Change icon color to match the overlay
                       ),
                       onSelected: (value) {},
                       itemBuilder: (BuildContext context) {
@@ -150,6 +163,7 @@ class HabitCard extends StatelessWidget {
                             child: const Text('Details'),
                             onTap: () {
                               _showDetailsDialog(context);
+                              print(card.milestone);
                             },
                           ),
                           PopupMenuItem<String>(

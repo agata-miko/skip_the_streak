@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../cubits/carousel_cubit.dart';
+import '../cubits/milestone_cubit.dart';
 import '../models/habit.dart';
 import '../widgets/carousel.dart';
 import '../widgets/milestone_carousel.dart';
@@ -25,21 +26,22 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   int? _selectedMilestone;
 
   late bool _isDateSwitched;
-  late bool _isMilestoneSwitched = false;
+  late bool _isMilestoneSwitched;
 
   @override
   void initState() {
     super.initState();
     // Set the initial values from the passed habit
     _titleController.text = widget.habit.title;
-    print(_titleController.text);
     _descriptionController.text = widget.habit.description ?? '';
-    print(_descriptionController.text);
     _selectedDate = widget.habit.startDate;
     _isDateSwitched = widget.habit.startDate != null;
     _selectedMilestone = widget.habit.milestone;
     _isMilestoneSwitched = widget.habit.milestone != null;
     context.read<CarouselCubit>().selectImage(widget.habit.imagePath);
+    if (_selectedMilestone != null) {
+      context.read<MilestoneCubit>().setMilestone(_selectedMilestone!);
+    }
   }
 
   // Function to save the edited habit
@@ -52,7 +54,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       isTapped: widget.habit.isTapped,
       imagePath: context.read<CarouselCubit>().state ?? widget.habit.imagePath,
       number: widget.habit.number,
-      milestone: widget.habit.milestone,
+      milestone: _isMilestoneSwitched ? _selectedMilestone : null,
     );
 
     context.read<HiveCubit>().updateHabit(widget.habit.id, updatedHabit);
@@ -76,7 +78,6 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       });
     }
   }
-
 
   // Function to scroll to the milestone picker
   void _scrollToMilestonePicker() {
@@ -146,7 +147,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   onChanged: (value) {
                     (_titleController.text = value);
                   },
-                  maxLength: 50,
+                  maxLength: 25,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     label: const Text('Title'),
@@ -258,48 +259,52 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     ],
                   ),
                 ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.04,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+              BlocBuilder<MilestoneCubit, MilestoneState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: Column(
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.milestone,
-                          style: const TextStyle(fontSize: 16),
+                        // Row with Switch and IconButton
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.milestone,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(width: 5),
+                                IconButton(
+                                  icon: const Icon(Icons.info_outline, color: Colors.grey),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Info about Milestone')),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            Switch(
+                              value: state.isMilestoneSet,
+                              onChanged: (bool value) {
+                                context.read<MilestoneCubit>().toggleMilestone();
+                              },
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 5),
-                        IconButton(
-                          icon: const Icon(Icons.info_outline,
-                              color: Colors.grey),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Info about Milestone')),
-                            );
-                          },
-                        ),
+                        // Conditionally render the MilestoneCarousel widget
+                        if (state.isMilestoneSet == true)
+                          const MilestoneCarousel(),
                       ],
                     ),
-                    Switch(
-                      value: _isMilestoneSwitched,
-                      onChanged: (value) {
-                        setState(() {
-                          _isMilestoneSwitched = value;
-                          if (_isMilestoneSwitched) {
-                            _scrollToMilestonePicker(); // Auto-scroll to milestone picker
-                          }
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-              if (_isMilestoneSwitched) const MilestoneCarousel(),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
