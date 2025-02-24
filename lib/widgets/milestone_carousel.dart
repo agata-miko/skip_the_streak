@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skip_the_streak/cubits/milestone_cubit.dart';
 
+import '../models/habit.dart';
+
 class MilestoneCarousel extends StatefulWidget {
-  const MilestoneCarousel({super.key});
+  final Habit? habit;
+  const MilestoneCarousel({super.key, this.habit});
 
   @override
   MilestoneCarouselState createState() => MilestoneCarouselState();
@@ -31,11 +34,10 @@ class MilestoneCarouselState extends State<MilestoneCarousel> {
   @override
   void initState() {
     super.initState();
-    final milestoneState = context.read<MilestoneCubit>().state;
-    _selectedIndex =
-        milestoneState.isMilestoneSet && milestoneState.milestone != null
-            ? milestoneState.milestone! - 1
-            : null;
+    widget.habit?.milestone != null
+            ? _selectedIndex = widget.habit!.milestone! - 1
+            : _selectedIndex = 0;
+
     _scrollController = _selectedIndex != null
         ? FixedExtentScrollController(initialItem: _selectedIndex!)
         : null;
@@ -43,21 +45,21 @@ class MilestoneCarouselState extends State<MilestoneCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MilestoneCubit, MilestoneState>(
-        listenWhen: (previous, current) =>
-            previous.milestone != current.milestone,
-        listener: (context, state) {
-          if (state.isMilestoneSet && state.milestone != null) {
-            _scrollController!.animateToItem(state.milestone! - 1,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut);
-          }
-        },
-        child: BlocBuilder<MilestoneCubit, MilestoneState>(
-          builder: (context, state) {
-            _selectedIndex = state.isMilestoneSet && state.milestone != null
-                ? state.milestone! - 1
-                : 0;
+    // return BlocListener<MilestoneCubit, MilestoneState>(
+    //     listenWhen: (previous, current) =>
+    //         previous.milestone != current.milestone,
+    //     listener: (context, state) {
+    //       if (state.isMilestoneSet && state.milestone != null) {
+    //         _scrollController!.animateToItem(state.milestone! - 1,
+    //             duration: const Duration(milliseconds: 300),
+    //             curve: Curves.easeInOut);
+    //       }
+    //     },
+    //     child: BlocBuilder<MilestoneCubit, MilestoneState>(
+    //       builder: (context, state) {
+    //         _selectedIndex = state.isMilestoneSet && state.milestone != null
+    //             ? state.milestone! - 1
+    //             : 0;
 
             return SizedBox(
               height: 80, // Adjusted height of the carousel container
@@ -136,7 +138,7 @@ class MilestoneCarouselState extends State<MilestoneCarousel> {
                 ],
               ),
             );
-          },
-        ));
+        //   },
+        // ));
   }
 }

@@ -39,13 +39,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     _selectedMilestone = widget.habit.milestone;
     _isMilestoneSwitched = widget.habit.milestone != null;
     context.read<CarouselCubit>().selectImage(widget.habit.imagePath);
-    if (_selectedMilestone != null) {
-      context.read<MilestoneCubit>().setMilestone(_selectedMilestone!);
-    }
   }
 
   // Function to save the edited habit
   Future<void> _editHabit() async {
+
     final updatedHabit = Habit(
       id: widget.habit.id,
       title: _titleController.text,
@@ -56,6 +54,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       number: widget.habit.number,
       milestone: _isMilestoneSwitched ? _selectedMilestone : null,
     );
+    print("saved_milestone: ${updatedHabit.milestone}");
+    print("_isMilestoneSwitched: $_isMilestoneSwitched");
+    print("_selectedMilestone: $_selectedMilestone");
+    print("Updated habit: ${updatedHabit.startDate}");
 
     context.read<HiveCubit>().updateHabit(widget.habit.id, updatedHabit);
 
@@ -290,16 +292,17 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               ],
                             ),
                             Switch(
-                              value: state.isMilestoneSet,
-                              onChanged: (bool value) {
-                                context.read<MilestoneCubit>().toggleMilestone();
-                              },
-                            ),
+                                value: state.isMilestoneSet,
+                                onChanged: (value) {
+                                  context
+                                      .read<MilestoneCubit>()
+                                      .toggleMilestone();
+                                }),
                           ],
                         ),
                         // Conditionally render the MilestoneCarousel widget
                         if (state.isMilestoneSet == true)
-                          const MilestoneCarousel(),
+                          MilestoneCarousel(habit: widget.habit,),
                       ],
                     ),
                   );
