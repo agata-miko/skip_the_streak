@@ -31,18 +31,22 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   @override
   void initState() {
     super.initState();
+    final milestoneCubit = context.read<MilestoneCubit>();
     // Set the initial values from the passed habit
     _titleController.text = widget.habit.title;
     _descriptionController.text = widget.habit.description ?? '';
     _selectedDate = widget.habit.startDate;
     _isDateSwitched = widget.habit.startDate != null;
     _selectedMilestone = widget.habit.milestone;
+    milestoneCubit.setMilestone(_selectedMilestone ?? 0);
     _isMilestoneSwitched = widget.habit.milestone != null;
     context.read<CarouselCubit>().selectImage(widget.habit.imagePath);
   }
 
   // Function to save the edited habit
   Future<void> _editHabit() async {
+    final milestoneState = context.read<MilestoneCubit>().state;
+
 
     final updatedHabit = Habit(
       id: widget.habit.id,
@@ -52,7 +56,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       isTapped: widget.habit.isTapped,
       imagePath: context.read<CarouselCubit>().state ?? widget.habit.imagePath,
       number: widget.habit.number,
-      milestone: _isMilestoneSwitched ? _selectedMilestone : null,
+      milestone: _isMilestoneSwitched ? milestoneState.milestone : null,
     );
     print("saved_milestone: ${updatedHabit.milestone}");
     print("_isMilestoneSwitched: $_isMilestoneSwitched");
@@ -292,17 +296,18 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               ],
                             ),
                             Switch(
-                                value: state.isMilestoneSet,
-                                onChanged: (value) {
-                                  context
-                                      .read<MilestoneCubit>()
-                                      .toggleMilestone();
-                                }),
+                              value: _isMilestoneSwitched,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isMilestoneSwitched = value;
+                                });
+                              },
+                            ),
                           ],
                         ),
                         // Conditionally render the MilestoneCarousel widget
-                        if (state.isMilestoneSet == true)
-                          MilestoneCarousel(habit: widget.habit,),
+                        if (_isMilestoneSwitched == true)
+                          MilestoneCarousel(habit: widget.habit),
                       ],
                     ),
                   );

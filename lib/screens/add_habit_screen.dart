@@ -223,7 +223,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 onChanged: (value) {
                                   context
                                       .read<MilestoneCubit>()
-                                      .toggleMilestone();
+                                      .toggleMilestone(value);
                                 }),
                           ],
                         ),
