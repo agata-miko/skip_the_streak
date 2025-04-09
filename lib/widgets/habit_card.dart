@@ -96,12 +96,14 @@ class HabitCard extends StatelessWidget {
     final double fontSizeNumber = screenWidth * 0.05;
 
     return InkWell(
+      borderRadius: BorderRadius.circular(16),
       onTap: () {
         context.read<HiveCubit>().incrementHabitNumber(habitId);
       },
       child: Card(
         margin: EdgeInsets.all(4),
         elevation: 8,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
