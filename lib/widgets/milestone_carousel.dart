@@ -41,6 +41,10 @@ class MilestoneCarouselState extends State<MilestoneCarousel> {
     _scrollController = _selectedIndex != null
         ? FixedExtentScrollController(initialItem: _selectedIndex!)
         : null;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MilestoneCubit>().setMilestone(_selectedIndex! + 1);
+    });
   }
 
   @override

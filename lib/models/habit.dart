@@ -27,7 +27,7 @@ class Habit {
   @HiveField(7)
   int? milestone;
 
-  Habit ({
+  Habit({
     String? id,
     required this.imagePath,
     required this.title,

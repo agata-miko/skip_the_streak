@@ -44,25 +44,31 @@ class HabitCard extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Details'),
+            title: Text(card.title.toUpperCase()),
             content: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 card.description != null
                     ? Text(
                         card.description!,
                         style: const TextStyle(fontSize: 15),
                       )
-                    : const Text('No details, you\'re good to go!'),
+                    : const Text(
+                        'No details, you\'re good to go!',
+                      ),
+                if (card.startDate != null)
+                  SizedBox(height: MediaQuery.of(context).size.height*0.01,),
                 if (card.startDate != null)
                   Text(
                     'Start date: ${DateFormat('dd MMMM yyyy').format(card.startDate!)}',
                     style: const TextStyle(fontSize: 15),
                   ),
                 if (card.milestone != null)
+                  SizedBox(height: MediaQuery.of(context).size.height*0.01,),
+                if (card.milestone != null)
                   Text(
                     'Milestone: ${card.milestone!}',
-                    textAlign: TextAlign.start,
                     style: const TextStyle(fontSize: 15),
                   ),
               ],

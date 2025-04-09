@@ -48,7 +48,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     final milestone = context.read<MilestoneCubit>().state.milestone;
 
     final newHabit = Habit(
-      imagePath: selectedImage ?? 'lib/assets/images/dummy_books.png',
+      imagePath: selectedImage ?? 'lib/assets/images/tick_lines.png',
       title: _titleController.text,
       description: _descriptionController.text,
       startDate: startDateState.isDateSet ? startDateState.startDate : null,
