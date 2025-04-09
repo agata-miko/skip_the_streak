@@ -77,6 +77,25 @@ class HiveCubit extends Cubit<HiveState> {
     }
   }
 
+  Future<void> decrementHabitNumber(String habitId) async {
+    try {
+      final keyToUpdate = habitBox.keys.firstWhere(
+            (key) => habitBox.get(key)!.id == habitId,
+        orElse: () => null,
+      );
+
+      if (keyToUpdate != null) {
+        final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
+          number: habitBox.get(keyToUpdate)!.number - 1,
+        );
+        await habitBox.put(keyToUpdate, updatedHabit);
+        loadHabits();
+      }
+    } catch (e) {
+      emit(HiveStateError("Failed to increment habit number: $e"));
+    }
+  }
+
 // Add a method to check and add a dummy habit if no habits exist
   void initializeWithDummyHabit() async {
     emit(HiveLoading());

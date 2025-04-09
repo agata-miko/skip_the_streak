@@ -167,6 +167,18 @@ class HabitCard extends StatelessWidget {
                       itemBuilder: (BuildContext context) {
                         return [
                           PopupMenuItem<String>(
+                            value: 'reverse',
+                            child: Row(
+                              children: [
+                                const Icon(Icons.arrow_circle_left_outlined),
+                                const Text(' Reverse the tap '),
+                              ],
+                            ),
+                            onTap: () {
+                              context.read<HiveCubit>().decrementHabitNumber(habitId);
+                            },
+                          ),
+                          PopupMenuItem<String>(
                             value: 'details',
                             child: const Text('Details'),
                             onTap: () {
