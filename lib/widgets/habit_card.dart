@@ -91,7 +91,7 @@ class HabitCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CongratulationsDialog();
+        return CongratulationsDialog(habitNumber: card.number + 1,);
       },
     );
   }
