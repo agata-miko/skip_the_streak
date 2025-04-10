@@ -158,6 +158,7 @@ class HabitCard extends StatelessWidget {
                       ),
                     ),
                     PopupMenuButton<String>(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       icon: const Icon(
                         Icons.more_vert,
                         color: Colors

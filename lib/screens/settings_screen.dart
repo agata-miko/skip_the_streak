@@ -114,7 +114,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 isScrollControlled: true, // Allows for full-height modals
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20)), // Rounded corners for the modal
+                      top:
+                          Radius.circular(20)), // Rounded corners for the modal
                 ),
                 builder: (BuildContext context) {
                   return ClipRRect(
@@ -132,8 +133,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('About'),
             onTap: () async {
               Navigator.pop(context);
-              await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AboutScreen()));
+              await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                // makes it full height
+                backgroundColor: Colors.transparent,
+                // remove default round corners
+                builder: (context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                      child: AboutScreen(),
+                    ),
+                  );
+                },
+              );
               // Close the drawer
             },
           ),

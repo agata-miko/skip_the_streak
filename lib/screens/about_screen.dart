@@ -1,54 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'settings_screen.dart';
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+class AboutScreen extends StatefulWidget {
+  @override
+  _AboutScreenState createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  int currentIndex = 0;
+
+  void nextStory(int total) {
+    if (currentIndex < total - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    }
+  }
+
+  void previousStory() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final stories = [
+      AppLocalizations.of(context)!.about1,
+      'Forget the pressure of keeping a perfect streak. It\'s simple: focus on action, not perfection.',
+      'Track your habits, celebrate your progress, and take it one day at a time. Enjoy the small wins without the stress. 💙',
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close),
             onPressed: () {
               Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        actions: [
-          Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(Icons.settings), // Settings icon
-                onPressed: () {
-                  // Open the drawer when settings icon is tapped
-                  Scaffold.of(context).openDrawer();
-                },
-              );
             },
           ),
         ],
       ),
-      drawer: const SettingsScreen(),
-      body: Column(children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.5,
-          decoration: const BoxDecoration(color: Color(0xff49672d)),
-          child: Column(
-            children: [
-              Text(AppLocalizations.of(context)!.about1),
-              Text(AppLocalizations.of(context)!.about2),
-            ],
-          ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTapDown: (details) {
+          if (details.globalPosition.dx < screenWidth / 2) {
+            previousStory();
+          } else {
+            nextStory(stories.length);
+          }
+        },
+        child: Stack(
+          children: [
+            // Main content (story text)
+            Center(
+              child: Text(
+                stories[currentIndex],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 28),
+              ),
+            ),
+
+            // Progress bar at the bottom
+            Positioned(
+              bottom: 20,
+              left: 16,
+              right: 16,
+              child: Row(
+                children: List.generate(stories.length, (index) {
+                  return Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: index <= currentIndex
+                            ? Colors.black26
+                            : Colors.black12,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
         ),
-        SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: Image.asset(
-              'lib/assets/images/about_image.png',
-              fit: BoxFit.cover,
-            )),
-      ]),
+      ),
     );
   }
 }
