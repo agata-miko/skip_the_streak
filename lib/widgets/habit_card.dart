@@ -5,6 +5,7 @@ import 'package:skip_the_streak/cubits/hive_state.dart';
 import 'package:skip_the_streak/models/habit.dart';
 import 'package:skip_the_streak/screens/edit_habit_screen.dart';
 import '../cubits/hive_cubit.dart';
+import 'congrats_dialog.dart';
 
 class HabitCard extends StatelessWidget {
   const HabitCard({
@@ -85,6 +86,16 @@ class HabitCard extends StatelessWidget {
         });
   }
 
+  void _showCongratulationsDialog(BuildContext context) {
+    // Show the congratulations dialog when the milestone is achieved
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CongratulationsDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -99,6 +110,9 @@ class HabitCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       onTap: () {
         context.read<HiveCubit>().incrementHabitNumber(habitId);
+        if (card.milestone != null && card.number + 1 == card.milestone!) {
+          _showCongratulationsDialog(context);
+        }
       },
       child: Card(
         margin: EdgeInsets.all(4),

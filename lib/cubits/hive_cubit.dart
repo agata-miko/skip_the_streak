@@ -45,7 +45,7 @@ class HiveCubit extends Cubit<HiveState> {
   Future<void> updateHabit(String habitId, updatedHabit) async {
     try {
       final keyToUpdate = habitBox.keys.firstWhere(
-            (key) => habitBox.get(key)!.id == habitId,
+        (key) => habitBox.get(key)!.id == habitId,
         orElse: () => null,
       );
 
@@ -61,14 +61,14 @@ class HiveCubit extends Cubit<HiveState> {
   Future<void> incrementHabitNumber(String habitId) async {
     try {
       final keyToUpdate = habitBox.keys.firstWhere(
-          (key) => habitBox.get(key)!.id == habitId,
+        (key) => habitBox.get(key)!.id == habitId,
         orElse: () => null,
       );
 
       if (keyToUpdate != null) {
         final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
-    number: habitBox.get(keyToUpdate)!.number + 1,
-    );
+              number: habitBox.get(keyToUpdate)!.number + 1,
+            );
         await habitBox.put(keyToUpdate, updatedHabit);
         loadHabits();
       }
@@ -80,18 +80,19 @@ class HiveCubit extends Cubit<HiveState> {
   Future<void> decrementHabitNumber(String habitId) async {
     try {
       final keyToUpdate = habitBox.keys.firstWhere(
-            (key) => habitBox.get(key)!.id == habitId,
+        (key) => habitBox.get(key)!.id == habitId,
         orElse: () => null,
       );
 
       if (keyToUpdate != null) {
-        if (habitBox.get(keyToUpdate)!.number >0) {
-        final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
-          number: habitBox.get(keyToUpdate)!.number - 1,
-        );
-        await habitBox.put(keyToUpdate, updatedHabit);
-        loadHabits();
-      }}
+        if (habitBox.get(keyToUpdate)!.number > 0) {
+          final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
+                number: habitBox.get(keyToUpdate)!.number - 1,
+              );
+          await habitBox.put(keyToUpdate, updatedHabit);
+          loadHabits();
+        }
+      }
     } catch (e) {
       emit(HiveStateError("Failed to increment habit number: $e"));
     }
@@ -116,38 +117,37 @@ class HiveCubit extends Cubit<HiveState> {
     }
   }
 
-  // Future<void> editStartDate(String habitId, DateTime startDate) async {
-  //   try {
-  //     final keyToUpdate = habitBox.keys.firstWhere(
-  //           (key) => habitBox.get(key)!.id == habitId,
-  //       orElse: () => null,
-  //     );
-  //
-  //     if (keyToUpdate != null) {
-  //       final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(startDate: startDate);
-  //       await habitBox.put(keyToUpdate, updatedHabit);
-  //       loadHabits();
-  //     }
-  //   } catch (e) {
-  //     emit(HiveStateError("Failed to save start date: $e"));
-  //   }
-  // }
-  //
-  // Future<void> editMilestone(String habitId, int milestone) async {
-  //   try {
-  //     final keyToUpdate = habitBox.keys.firstWhere(
-  //           (key) => habitBox.get(key)!.id == habitId,
-  //       orElse: () => null,
-  //     );
-  //
-  //     if (keyToUpdate != null) {
-  //       final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(milestone: milestone);
-  //       await habitBox.put(keyToUpdate, updatedHabit);
-  //       loadHabits();
-  //     }
-  //   } catch (e) {
-  //     emit(HiveStateError("Failed to save start date: $e"));
-  //   }
-  // }
-
+// Future<void> editStartDate(String habitId, DateTime startDate) async {
+//   try {
+//     final keyToUpdate = habitBox.keys.firstWhere(
+//           (key) => habitBox.get(key)!.id == habitId,
+//       orElse: () => null,
+//     );
+//
+//     if (keyToUpdate != null) {
+//       final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(startDate: startDate);
+//       await habitBox.put(keyToUpdate, updatedHabit);
+//       loadHabits();
+//     }
+//   } catch (e) {
+//     emit(HiveStateError("Failed to save start date: $e"));
+//   }
+// }
+//
+// Future<void> editMilestone(String habitId, int milestone) async {
+//   try {
+//     final keyToUpdate = habitBox.keys.firstWhere(
+//           (key) => habitBox.get(key)!.id == habitId,
+//       orElse: () => null,
+//     );
+//
+//     if (keyToUpdate != null) {
+//       final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(milestone: milestone);
+//       await habitBox.put(keyToUpdate, updatedHabit);
+//       loadHabits();
+//     }
+//   } catch (e) {
+//     emit(HiveStateError("Failed to save start date: $e"));
+//   }
+// }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:skip_the_streak/screens/congrats_screen.dart';
 import 'package:skip_the_streak/screens/main_habits_screen.dart';
-import 'package:skip_the_streak/screens/welcome_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'adapters/habit_adapter.dart';
 import 'cubits/carousel_cubit.dart';
