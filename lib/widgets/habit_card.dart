@@ -110,7 +110,7 @@ class HabitCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       onTap: () {
         context.read<HiveCubit>().incrementHabitNumber(habitId);
-        if (card.milestone != null && card.number + 1 == card.milestone!) {
+        if (card.milestone != null && (card.number + 1) % card.milestone! == 0) {
           _showCongratulationsDialog(context);
         }
       },
