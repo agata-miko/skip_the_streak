@@ -85,12 +85,13 @@ class HiveCubit extends Cubit<HiveState> {
       );
 
       if (keyToUpdate != null) {
+        if (habitBox.get(keyToUpdate)!.number >0) {
         final updatedHabit = habitBox.get(keyToUpdate)!.copyWith(
           number: habitBox.get(keyToUpdate)!.number - 1,
         );
         await habitBox.put(keyToUpdate, updatedHabit);
         loadHabits();
-      }
+      }}
     } catch (e) {
       emit(HiveStateError("Failed to increment habit number: $e"));
     }
