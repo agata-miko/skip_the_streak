@@ -1,7 +1,7 @@
 const List<String> encouragingSlogans = [
   "So {habitNumber} times, huh? You're on fire 🔥🔥🔥!",
   "Look at you, {habitNumber} times strong! 💪 Keep going!",
-  "Only {habitNumber} times? You're crushing it! 🏆💥",
+  "{habitNumber} times? You're crushing it! 🏆💥",
   "Whoa, {habitNumber} already? You're unstoppable! 🚀🔥",
   "Boom! {habitNumber} times! Nothing can stop you now 💯",
   "Keep it up! {habitNumber} times and you're a champion 🏅🙌",
@@ -13,7 +13,7 @@ const List<String> encouragingSlogans = [
   "How about that! {habitNumber} times, and you're doing great 🌍🙌",
   "Did someone say {habitNumber} times? You're unstoppable! 🚀🔥",
   "30? More like 30 reasons to celebrate! 🎉🎉 Keep it going!",
-  "Look at that, {habitNumber} times! You're getting stronger every day 🏅💪",
+  "Look at that, {habitNumber} times! You're getting better every day! 🏅💪",
   "Keep going, {habitNumber} in, and the best is yet to come! 🚀💫",
   "Big milestone: {habitNumber} times! Time to celebrate 🎉🍾",
   "You did it, {habitNumber} times! Now, that's some serious progress! 💯🏆",

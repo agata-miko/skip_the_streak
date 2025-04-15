@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/hive_cubit.dart';
 import 'package:skip_the_streak/screens/add_habit_screen.dart';
 import '../cubits/hive_state.dart';
+import '../models/habit.dart';
 import '../widgets/habit_layout.dart';
 import 'settings_screen.dart';
 import '../widgets/habit_card.dart';
@@ -17,11 +18,24 @@ class MainHabitsScreen extends StatefulWidget {
 }
 
 class _MainHabitsScreenState extends State<MainHabitsScreen> {
+
+  //TEST TEST TEST
+  void printHabitsFromHive() {
+    final habitBox = Hive.box<Habit>('habits');  // Otwórz odpowiedni Box
+
+    // Wydrukuj wszystkie habit
+    habitBox.values.forEach((habit) {
+      print('Habit ID: ${habit.id}, Title: ${habit.title}, Milestone: ${habit.milestone}');
+    });
+  }
+ // TEST TEST TEST
   @override
   void initState() {
     super.initState();
     context.read<HiveCubit>().loadHabits();
     context.read<HiveCubit>().initializeWithDummyHabit();
+    // TEST TEST TEST
+    printHabitsFromHive();
   }
 
   @override

@@ -65,9 +65,9 @@ class HabitCard extends StatelessWidget {
                     'Start date: ${DateFormat('dd MMMM yyyy').format(card.startDate!)}',
                     style: const TextStyle(fontSize: 15),
                   ),
-                if (card.milestone != null)
+                if (card.milestone != null && card.milestone != 0)
                   SizedBox(height: MediaQuery.of(context).size.height*0.01,),
-                if (card.milestone != null)
+                if (card.milestone != null && card.milestone != 0)
                   Text(
                     'Milestone: ${card.milestone!}',
                     style: const TextStyle(fontSize: 15),
@@ -79,7 +79,7 @@ class HabitCard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Great!'),
+                child: const Text('Got it!'),
               ),
             ],
           );

@@ -15,8 +15,6 @@ import 'models/habit.dart';
 import 'utils/util.dart';
 import 'theme/theme.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensures Flutter is initialized
   await Hive.initFlutter(); // Initialize Hive

@@ -15,6 +15,7 @@ class HabitAdapter extends TypeAdapter<Habit> {
       number: reader.readInt(),
       startDate: reader.read(),
       isTapped: reader.readBool(),
+      milestone: reader.readInt(),
     );
   }
 
@@ -27,5 +28,6 @@ class HabitAdapter extends TypeAdapter<Habit> {
     writer.writeInt(obj.number);
     writer.write(obj.startDate);
     writer.writeBool(obj.isTapped);
+    writer.writeInt(obj.milestone ?? 0);
   }
 }
